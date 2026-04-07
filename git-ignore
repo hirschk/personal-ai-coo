@@ -1,0 +1,35 @@
+# Personal data — exclude from public repos
+MEMORY.md
+memory/
+network.md
+candidate_profile.md
+openclaw.json
+
+# Local environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Node
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Secrets
+google_client_secret.json
+credentials.json
+*.key
