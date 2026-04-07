@@ -1,177 +1,120 @@
-# sterl-job-search-agent
-An autonomous job search agent built on OpenClaw. Scans LinkedIn jobs every 48hrs, maps them to my network, drafts personalized outreach by name, follows up automatically, and delivers everything via Telegram
-# Sterl — Personal AI Chief Operating Officer
+# Sterl — Network-First Job Search Agent
 
-> Built by a non-technical PM with zero coding background. No engineers. No budget. One afternoon.
+An autonomous job search agent that runs on a VPS, scrapes LinkedIn via Apify, scores jobs against your network, and delivers a daily brief via Telegram.
 
-**Sterl OS v0.1**
-
-```
-✅ Core infrastructure live
-✅ Candidate profile + network indexed  
-✅ Job scoring logic defined
-⏳ Job discovery engine (in progress)
-⏳ Autonomous outreach (draft-first, human-approve)
-⏳ Ideas OS (planned)
-
-Deployment: DigitalOcean NYC1 + Telegram
-Model: Claude Haiku (chat) / Claude Sonnet (heavy tasks)
-Network: 4,261 connections across 3,708 companies
-```
+Built on [OpenClaw](https://openclaw.ai) + Claude Sonnet.
 
 ---
 
-## What it does
+## What It Does
 
-Sterl is a personal AI agent that runs 24/7 on a cloud server and works your job search automatically.
+- **Mon/Wed/Fri 11am** — scrapes LinkedIn for PM roles, scores by fit + network + recency, sends top 5 to Telegram
+- **Daily 2pm** — reminds you to send thank-you notes after interviews, drafts them for you
+- **Daily 6pm** — evening nudge if you have unactioned jobs or overdue follow-ups
+- **Every 2h** — checks Gmail for replies to outreach, auto-updates Google Sheets tracker
+- **Friday** — ends brief with: "Is the pipeline moving? Yes or no."
 
-Every 48 hours it scans new job postings, figures out who you know at those companies, writes a personalized outreach message for each person, and delivers everything to your phone via Telegram.
-
-If you haven't sent the messages by afternoon, it follows up. By name.
-
-*"Did you send that note to Sarah at Cursor?"*
-
-The only number it tracks is **interviews per week**.
+Nothing drops. If you don't action something, it carries forward automatically until you say pass, done, or park.
 
 ---
 
-## How it works
+## Stack
 
-```
-LinkedIn Jobs (Apify) → Job Scoring Engine → Network Matching (LinkedIn CSV)
-→ Outreach Drafts → Telegram Daily Brief → Google Sheets Tracker
-```
-
-**Job discovery:** Scans LinkedIn jobs posted in the last 48 hours filtered by target titles and locations. Scores each job by role fit, network access, and recency.
-
-**Network matching:** Maps job companies against your LinkedIn connections export. Ranks connections by relevance — product roles first, recruiting second, any connection third.
-
-**Outreach generation:** Drafts three message types per opportunity — direct outreach, intro requests, and connection requests — in your voice.
-
-**Follow-up cadence:** Day 3 → Follow-up #1. Day 6 → Follow-up #2. Day 10 → Final touch. Then cold. Always draft-first, never auto-sends.
-
-**Daily brief:** Every weekday at 11am via Telegram — top 5 opportunities, best contact, exact message, why it's prioritized.
-
-**Weekly check-in:** Every Friday — interviews booked, outreach sent, conversations active, pipeline velocity warning if outreach is low.
-
----
-
-## Tech stack
-
-| Component | Tool |
+| Component | Purpose |
 |---|---|
-| Agent runtime | [OpenClaw](https://openclaw.ai) |
-| LLM | Claude Sonnet 4.6 (heavy tasks) + Haiku (routine) |
-| Interface | Telegram |
-| Hosting | DigitalOcean Droplet ($6/month) |
-| Job scraping | Apify LinkedIn Jobs Scraper (MCP) |
-| Network data | LinkedIn Connections CSV export |
-| Tracker | Google Sheets |
-| Memory | OpenClaw MEMORY.md (markdown-based persistence) |
-
----
-
-## Scoring logic
-
-```
-priority_score =
-  (0.4 × fit_score)
-+ (0.4 × network_score)
-+ (0.2 × recency_score)
-```
-
-**fit_score** — role title, seniority, industry match against candidate profile
-
-**network_score** — 1st degree connection in product role = 1.0, recruiting = 0.7, any role = 0.5, no connection = 0.0
-
-**recency_score** — posted <48hrs = 1.0, 2-4 days = 0.7, 5-7 days = 0.3, >7 days = 0.0
-
----
-
-## Daily Telegram brief format
-
-```
-Morning. Here's your job search brief.
-
-FOLLOW-UPS
-Gmail: Waiting on Bob Chen (Stripe, emailed Apr 1).
-LinkedIn: Did you send the messages to Sam at Cursor, 
-Joe at Ramp, and Sally at Brex?
-
-TODAY'S TOP 5
-1. Head of Product @ Cursor (9.2) — You know Sarah Lee. Draft ready.
-2. VP Product @ Rippling (8.7) — You know Mike Wang. Draft ready.
-3. Director of Product @ Plaid (7.9) — No connection. Request drafted.
-4. Head of AI Product @ Notion (7.4) — Intro ask drafted.
-5. Senior PM @ Linear (6.8) — No connection. Request drafted.
-
-Reply "drafts" to see all 5 messages.
-```
+| OpenClaw | AI agent runtime + Telegram bridge |
+| Claude Sonnet | Scoring, drafting, formatting |
+| Apify | LinkedIn job scraper |
+| Google Sheets | Job tracker (Jobs, Interviews, Outreach, Contacts, KPIs) |
+| Gmail API | Reply detection |
+| Cron | Scheduling |
 
 ---
 
 ## Setup
 
-### Prerequisites
-- Anthropic API key (console.anthropic.com)
-- Telegram account
-- DigitalOcean account (or any VPS)
-- LinkedIn connections CSV export
-- Apify account (for LinkedIn job scraping)
-- Google account (for Sheets tracker)
+### 1. Prerequisites
 
-### Install
+- VPS running Ubuntu (DigitalOcean $6/mo works fine)
+- [OpenClaw](https://openclaw.ai) installed and connected to Telegram
+- Python 3.10+
+
+### 2. Install dependencies
 
 ```bash
-# On your VPS
-curl -fsSL https://openclaw.ai/install.sh | bash
-openclaw onboard
+pip install apify-client google-auth google-auth-httplib2 google-api-python-client
 ```
 
-### Connect Telegram
-1. Message @BotFather on Telegram
-2. Run /newbot and get your token
-3. Paste token during openclaw onboard
-4. Approve pairing: `openclaw pairing approve telegram <code>`
+### 3. Configure environment
 
-### Feed your data
-Send Sterl your resume and LinkedIn CSV via Telegram. It parses both and builds your candidate profile and network map automatically.
+Set these as env vars or in a `.env` file (never commit them):
 
-### Set cron jobs
+```bash
+APIFY_API_TOKEN=your_apify_token_here
 ```
-openclaw cron add --name "job-search-brief" --schedule "0 11 * * 1-5"
-openclaw cron add --name "linkedin-content" --schedule "30 17 * * 1,3,5"
-openclaw cron add --name "weekly-checkin" --schedule "0 17 * * 5"
+
+### 4. Google OAuth
+
+1. Create a project in [Google Cloud Console](https://console.cloud.google.com)
+2. Enable Sheets API + Gmail API
+3. Create OAuth 2.0 credentials → download as `google_client_secret.json`
+4. Run the auth flow once to generate a token (save to `config/gog-token.json`)
+
+### 5. Telegram bot
+
+Create a bot via [@BotFather](https://t.me/botfather) and get your:
+- Bot token
+- Chat ID
+
+Update `TELEGRAM_TOKEN` and `TELEGRAM_CHAT_ID` in the scripts.
+
+### 6. Google Sheets tracker
+
+Create a new Google Sheet with 5 tabs: `Jobs`, `Interviews`, `Outreach`, `Contacts`, `KPIs`
+
+Update `SHEET_ID` in the scripts with your sheet ID.
+
+### 7. Customize job search
+
+In `scripts/job-discovery-apify.py`, update:
+- `TITLES` — job titles to search
+- `TARGET_LOCATIONS` — cities/remote preference
+- `TARGET_ROLES` — scoring weights for role types
+
+### 8. Set up cron
+
+```bash
+# Job discovery brief — Mon/Wed/Fri 11am EST
+0 16 * * 1,3,5 python3 /path/to/scripts/cron-job-discovery.sh
+
+# Interview follow-up — daily 2pm EST
+0 19 * * * python3 /path/to/scripts/interview-followup.py
+
+# Evening nudge — daily 6pm EST
+0 23 * * * python3 /path/to/scripts/evening-nudge.py
+
+# Gmail reply check — every 2 hours
+0 */2 * * * python3 /path/to/scripts/gmail-reply-check.py
 ```
 
 ---
 
-## Architecture
+## Scoring Logic
 
-```
-[LinkedIn Jobs API] → [Apify MCP Scraper]
-                              ↓
-[LinkedIn CSV] → [Network Mapper] → [Scoring Engine]
-                                          ↓
-                              [Outreach Generator]
-                                          ↓
-                    [OpenClaw Gateway] → [Telegram]
-                              ↓
-                    [Google Sheets Tracker]
-                              ↓
-                    [MEMORY.md — persistent state]
-```
+`priority = (0.4 × fit) + (0.4 × network) + (0.2 × recency)`
+
+See `skills/job-scoring/SKILL.md` for full details.
 
 ---
 
-## About
+## Network Matching
 
-Built by **Hirsch Keshav** — Senior AI Product Manager.
+Export your LinkedIn connections as CSV (Settings → Data Privacy → Get a copy of your data → Connections).
 
-10+ years in AI product. Zero coding background. Accounting degree.
-
-Built this in one afternoon from a cenote in Tulum.
+The script fuzzy-matches job company names against your connections to surface warm paths. Threshold: 0.80.
 
 ---
 
-*"You generate. Sterl executes."*
+## Carry-Forward Rule
+
+Nothing is ever dropped. Unactioned jobs and overdue follow-ups appear in every brief until you explicitly say: **pass**, **done**, or **park**.
