@@ -26,6 +26,17 @@ WORKSPACE        = "/root/.openclaw/workspace"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 GOG_TOKEN_FILE   = os.path.join(WORKSPACE, "config/gog-token.json")
 
+# Job title terms that indicate non-PM roles — filter before scoring
+EXCLUDE_TITLES = {
+    "marketing", "product marketing", "director of product marketing",
+    "growth marketing", "brand", "sales", "account executive",
+    "account manager", "customer success", "solutions engineer",
+    "data engineer", "software engineer", "frontend", "backend",
+    "devops", "designer", "ux designer", "ui designer",
+    "recruiter", "talent", "hr ", "finance", "legal", "operations manager",
+    "office manager", "executive assistant",
+}
+
 # Companies to exclude from results (staffing firms, generic placeholders)
 CONFIDENTIAL_BLOCKLIST = {
     "confidential jobs", "confidential", "confidential company",
@@ -144,6 +155,20 @@ def score_network(contacts):
             return 0.8, f"{c['name']} (Recruiter at {c['company']})"
     return 0.6, f"{contacts[0]['name']} ({contacts[0]['title']})"
 
+def is_pm_role(title: str) -> bool:
+    """Return False if the title looks like a non-PM role.
+
+    'product operations' and 'product analyst' are intentionally allowed.
+    """
+    tl = title.lower()
+    # Never exclude roles that are clearly PM-adjacent
+    if "product operations" in tl or "product analyst" in tl:
+        return True
+    for term in EXCLUDE_TITLES:
+        if term in tl:
+            return False
+    return True
+
 # ── Filter + score ────────────────────────────────────────────────────────────
 
 def location_ok(item):
@@ -173,6 +198,10 @@ def process(items, network):
         if (job.get("companyName") or "").lower().strip() in CONFIDENTIAL_BLOCKLIST:
             continue
         title   = job.get("title") or ""
+
+        # Skip non-PM roles before scoring
+        if not is_pm_role(title):
+            continue
         company = job.get("companyName") or ""
         desc    = job.get("descriptionText") or ""
         url     = job.get("link") or job.get("applyUrl") or ""
@@ -309,6 +338,39 @@ def get_followups():
         print(f"  ⚠ Outreach fetch failed: {e}", file=sys.stderr)
         return []
 
+def get_weekly_outreach_count():
+    """Count outreach messages sent this week (Monday to today) with actionable status."""
+    svc = sheets_client()
+    if not svc:
+        return 0
+    try:
+        result = svc.values().get(
+            spreadsheetId=SHEET_ID,
+            range="Outreach!A2:H100"
+        ).execute()
+        rows = result.get("values", [])
+        today = datetime.now(timezone.utc).date()
+        monday = today - timedelta(days=today.weekday())  # most recent Monday
+        count = 0
+        for row in rows:
+            if len(row) < 6:
+                continue
+            date_str = row[0]
+            status = row[5] if len(row) > 5 else ""
+            if status not in ("Sent", "Replied", "Meeting Booked"):
+                continue
+            try:
+                sent_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+                if monday <= sent_date <= today:
+                    count += 1
+            except:
+                pass
+        return count
+    except Exception as e:
+        print(f"  ⚠ Weekly outreach count failed: {e}", file=sys.stderr)
+        return 0
+
+
 def get_upcoming_interviews():
     """Pull interviews in the next 7 days."""
     svc = sheets_client()
@@ -359,6 +421,7 @@ def format_brief(top5, total_scraped, total_filtered):
             lines.append(f"   [View →]({j['url']})")
         lines.append("")
     lines.append("_Reply with job number to draft outreach._")
+    lines.append("_Reply \"drafts\" to see all 5 outreach messages._")
     return "\n".join(lines)
 
 def format_followups_and_interviews(followups, interviews, unactioned):
@@ -464,6 +527,11 @@ def main():
     friday_q = ""
     if datetime.now(timezone.utc).weekday() == 4:  # Friday
         friday_q = "\n\n📊 *Is the pipeline moving? Yes or no.*"
+        weekly_count = get_weekly_outreach_count()
+        if weekly_count < 5:
+            friday_q += f"\n⚠️ Only {weekly_count} outreach sent this week (target: 5). What's blocking?"
+        else:
+            friday_q += f"\n✅ {weekly_count} outreach sent this week — on track."
 
     send_telegram(brief + crm + friday_q)
     print("✅ Telegram brief sent")

@@ -63,7 +63,6 @@ def get_credentials(scopes):
 def gmail_client():
     creds = get_credentials([
         "https://www.googleapis.com/auth/gmail.readonly",
-        "https://www.googleapis.com/auth/gmail.modify",
     ])
     return build("gmail", "v1", credentials=creds)
 
@@ -143,10 +142,33 @@ def load_outreach_rows(svc_sheets):
     return active
 
 
+def get_thread_context(svc_gmail, thread_id):
+    """
+    Pull full thread (inbox + sent) and return a summary of the conversation.
+    Returns list of {from, subject, snippet} for each message in thread.
+    """
+    thread = svc_gmail.users().threads().get(
+        userId="me",
+        id=thread_id,
+        format="metadata",
+        metadataHeaders=["From", "To", "Subject", "Date"],
+    ).execute()
+    messages = thread.get("messages", [])
+    context = []
+    for msg in messages:
+        headers  = msg.get("payload", {}).get("headers", [])
+        from_hdr = get_header(headers, "From")
+        subj     = get_header(headers, "Subject")
+        snippet  = msg.get("snippet", "")[:200]
+        context.append({"from": from_hdr, "subject": subj, "snippet": snippet})
+    return context
+
+
 def search_gmail_unread(svc_gmail):
     """
     Search Gmail inbox for unread messages.
-    Returns list of (message_id, sender_name, sender_email).
+    Pulls full thread context (inbox + sent) for each match.
+    Returns list of (message_id, thread_id, sender_name, sender_email, thread_context).
     """
     query    = "in:inbox is:unread"
     response = svc_gmail.users().messages().list(
@@ -167,12 +189,17 @@ def search_gmail_unread(svc_gmail):
         headers     = msg.get("payload", {}).get("headers", [])
         from_header = get_header(headers, "From")
         sender_name = extract_sender_name(from_header)
-        # Extract email address
         if "<" in from_header and ">" in from_header:
             sender_email = from_header.split("<")[1].rstrip(">").strip()
         else:
             sender_email = from_header.strip()
-        results.append((msg_stub["id"], sender_name, sender_email))
+        thread_id = msg_stub.get("threadId", msg_stub["id"])
+        # Pull full thread context
+        try:
+            thread_ctx = get_thread_context(svc_gmail, thread_id)
+        except Exception:
+            thread_ctx = []
+        results.append((msg_stub["id"], thread_id, sender_name, sender_email, thread_ctx))
     return results
 
 
@@ -236,16 +263,18 @@ def main():
 
     # Match
     matched = []
-    for msg_id, sender_name, sender_email in unread_messages:
+    for msg_id, thread_id, sender_name, sender_email, thread_ctx in unread_messages:
         for sheet_row, outreach_name, company, status in outreach_rows:
             if names_match(sender_name, outreach_name):
                 matched.append({
                     "msg_id": msg_id,
+                    "thread_id": thread_id,
                     "sender_name": sender_name,
                     "sender_email": sender_email,
                     "sheet_row": sheet_row,
                     "outreach_name": outreach_name,
                     "company": company,
+                    "thread_ctx": thread_ctx,
                 })
                 break  # one match per message is enough
 
@@ -264,7 +293,13 @@ def main():
             continue
 
         try:
-            msg = f"🟢 Reply from {match['outreach_name']} @ {match['company']} — check your inbox"
+            # Build Telegram message with thread context snippet
+            ctx_lines = []
+            for m in match.get("thread_ctx", [])[-3:]:  # last 3 messages
+                sender_short = extract_sender_name(m["from"])
+                ctx_lines.append(f"  _{sender_short}:_ {m['snippet'][:100]}")
+            ctx_str = "\n".join(ctx_lines)
+            msg = f"🟢 *Reply from {match['outreach_name']} @ {match['company']}*\n{ctx_str}\n\n_Check your inbox_"
             send_telegram(msg)
             print(f"  ✓ Telegram sent: {msg}")
             notified.append(match)
