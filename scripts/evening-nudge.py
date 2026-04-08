@@ -18,6 +18,15 @@ WORKSPACE        = "/root/.openclaw/workspace"
 TELEGRAM_TOKEN   = "REDACTED"
 TELEGRAM_CHAT_ID = "8768439197"
 
+def load_seen_cache():
+    """Load jobs-today.json cache."""
+    import json, os
+    path = os.path.join(WORKSPACE, "jobs-today.json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        return json.load(f)
+
 def sheets_client():
     with open(os.path.join(WORKSPACE, "config/gog-token.json")) as f:
         tok = json.load(f)
@@ -45,16 +54,45 @@ def main():
     svc = sheets_client()
     today = datetime.now(timezone.utc).date()
 
-    # Unactioned jobs
-    rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
+    # Unactioned jobs — load from jobs-today.json cache first, fall back to Sheets
     unactioned = []
-    for row in rows:
-        if len(row) < 9: continue
-        company, role, status = row[0], row[1], row[8]
-        score = row[4] if len(row) > 4 else ""
-        url = row[3] if len(row) > 3 else ""
-        if status.lower() == "new":
-            unactioned.append({"company": company, "role": role, "score": score, "url": url})
+    cache_path = os.path.join(WORKSPACE, "jobs-today.json")
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path) as f:
+                cache = json.load(f)
+            # Only use cache if it's from today
+            ts = cache.get("timestamp", "")
+            if ts[:10] == str(today):
+                # Cross-reference with sheet for current status
+                rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:I100",
+                    fields="values").execute().get("values", [])
+                actioned = {row[0].lower() for row in rows if len(row) >= 9 and row[8].lower() != "new"}
+                for j in cache.get("all_scored", cache.get("top_5", [])):
+                    if j["company"].lower() not in actioned:
+                        unactioned.append({"company": j["company"], "role": j["title"],
+                                           "score": j["priority_score"], "url": j["url"]})
+            else:
+                raise ValueError("Cache is stale")
+        except Exception:
+            # Fall back to full sheet read
+            rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
+            for row in rows:
+                if len(row) < 9: continue
+                company, role, status = row[0], row[1], row[8]
+                score = row[4] if len(row) > 4 else ""
+                url = row[3] if len(row) > 3 else ""
+                if status.lower() == "new":
+                    unactioned.append({"company": company, "role": role, "score": score, "url": url})
+    else:
+        rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
+        for row in rows:
+            if len(row) < 9: continue
+            company, role, status = row[0], row[1], row[8]
+            score = row[4] if len(row) > 4 else ""
+            url = row[3] if len(row) > 3 else ""
+            if status.lower() == "new":
+                unactioned.append({"company": company, "role": role, "score": score, "url": url})
 
     # Overdue outreach
     rows2 = svc.values().get(spreadsheetId=SHEET_ID, range="Outreach!A2:H100").execute().get("values", [])

@@ -460,6 +460,28 @@ def format_followups_and_interviews(followups, interviews, unactioned):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
+def load_seen_jobs():
+    """Load cache of previously seen job keys (ordered list, oldest first)."""
+    path = os.path.join(WORKSPACE, "seen-jobs.json")
+    if not os.path.exists(path):
+        return []
+    with open(path) as f:
+        data = json.load(f)
+    # Support legacy set format (unordered)
+    if isinstance(data, list):
+        return data
+    return list(data)
+
+
+def save_seen_jobs(seen_list):
+    """Save seen jobs cache. Evicts oldest entries first (FIFO) at 500 cap."""
+    path = os.path.join(WORKSPACE, "seen-jobs.json")
+    # Trim from the front (oldest) to keep the most recent 500
+    trimmed = seen_list[-500:] if len(seen_list) > 500 else seen_list
+    with open(path, "w") as f:
+        json.dump(trimmed, f)
+
+
 def main():
     print(f"[{datetime.now().isoformat()}] Sterl job discovery starting")
 
@@ -493,7 +515,29 @@ def main():
         send_telegram(msg)
         return 1
 
-    scored = process(items, network)
+    # Filter out previously seen jobs before scoring
+    seen_list = load_seen_jobs()
+    seen_set   = set(seen_list)  # for O(1) lookup
+    new_items  = []
+    for item in items:
+        title   = (item.get("title") or "").lower().strip()
+        company = (item.get("companyName") or "").lower().strip()
+        key = f"{title}|{company}"
+        if key not in seen_set:
+            new_items.append(item)
+    print(f"  {len(new_items)} new (unseen) items after cache filter")
+
+    # Append new keys to end of list (FIFO — oldest at front, newest at back)
+    for item in items:
+        title   = (item.get("title") or "").lower().strip()
+        company = (item.get("companyName") or "").lower().strip()
+        key = f"{title}|{company}"
+        if key not in seen_set:
+            seen_list.append(key)
+            seen_set.add(key)
+    save_seen_jobs(seen_list)
+
+    scored = process(new_items if new_items else items, network)
     top5 = scored[:5]
 
     print("\n🎯 Top 5:")

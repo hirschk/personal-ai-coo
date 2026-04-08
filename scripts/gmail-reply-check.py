@@ -39,6 +39,103 @@ COL_STATUS  = 5
 # Statuses that mean we're still waiting for a reply
 ACTIVE_STATUSES = {"sent", "followed up", "pending", "no reply", ""}
 
+THANKYOU_LOG = os.path.join(WORKSPACE, "logs/thankyou-sent.json")
+INTERVIEW_KEYWORDS = [
+    "interview", "screen", "call", "chat", "recruiter",
+    "product", "cpo", "cto", "vp ", "director", "manager"
+]
+
+
+# ─── Auth ─────────────────────────────────────────────────────────────────────
+
+# ─── Interview follow-up (merged) ────────────────────────────────────────────
+
+def load_thankyou_log():
+    if not os.path.exists(THANKYOU_LOG):
+        return {}
+    with open(THANKYOU_LOG) as f:
+        return json.load(f)
+
+def save_thankyou_log(log):
+    os.makedirs(os.path.dirname(THANKYOU_LOG), exist_ok=True)
+    with open(THANKYOU_LOG, "w") as f:
+        json.dump(log, f, indent=2)
+
+def is_interview_event(title):
+    return any(kw in title.lower() for kw in INTERVIEW_KEYWORDS)
+
+def draft_thankyou(company, role, stage, notes):
+    return (
+        f"Hi [Name],\n\nThank you for the time today re: {role} at {company}. "
+        f"I really enjoyed [specific thing discussed].\n\n"
+        f"[One relevant proof point].\n\nLooking forward to next steps.\n\nHirsch"
+    )
+
+def check_interview_followups(svc_sheets, svc_cal):
+    """Check for interviews that ended in last 2 hours. Fire thank-you if not yet sent."""
+    now = datetime.now(timezone.utc)
+    two_hours_ago = now - timedelta(hours=2)
+    today = now.date()
+    sent_log = load_thankyou_log()
+
+    rows = svc_sheets.values().get(
+        spreadsheetId=SHEET_ID, range="Interviews!A2:H100"
+    ).execute().get("values", [])
+
+    sheet_interviews = []
+    for row in rows:
+        if len(row) < 5: continue
+        company, role, stage, date_str, status = row[0], row[1], row[2], row[3], row[4]
+        notes = row[5] if len(row) > 5 else ""
+        if status in ("Completed", "Passed", "Failed", "Thank-you Sent"): continue
+        try:
+            if datetime.strptime(date_str, "%Y-%m-%d").date() == today:
+                sheet_interviews.append({"company": company, "role": role,
+                                         "stage": stage, "notes": notes, "date": date_str})
+        except: pass
+
+    if not sheet_interviews:
+        return
+
+    try:
+        events = svc_cal.events().list(
+            calendarId="primary",
+            timeMin=two_hours_ago.isoformat(),
+            timeMax=now.isoformat(),
+            singleEvents=True, orderBy="startTime"
+        ).execute().get("items", [])
+    except Exception as e:
+        print(f"  Calendar check failed: {e}")
+        return
+
+    recent_summaries = [
+        e.get("summary", "") for e in events
+        if e["end"].get("dateTime") and
+        datetime.fromisoformat(e["end"]["dateTime"]) <= now
+    ]
+
+    for interview in sheet_interviews:
+        log_key = f"{interview['company']}_{interview['date']}"
+        if log_key in sent_log:
+            continue
+        matched = any(
+            interview["company"].lower() in s.lower() or is_interview_event(s)
+            for s in recent_summaries
+        )
+        if not matched:
+            continue
+        draft = draft_thankyou(interview["company"], interview["role"],
+                               interview["stage"], interview["notes"])
+        msg = (
+            f"📬 *Thank-you note — {interview['company']}*\n"
+            f"_{interview['role']} ({interview['stage']})_\n\n"
+            f"Draft:\n```\n{draft}\n```\n_Personalise the \\[brackets\\] and send._"
+        )
+        send_telegram(msg)
+        sent_log[log_key] = now.isoformat()
+        save_thankyou_log(sent_log)
+        print(f"  📬 Thank-you prompt sent for {interview['company']}")
+
 
 # ─── Auth ─────────────────────────────────────────────────────────────────────
 
@@ -70,6 +167,11 @@ def gmail_client():
 def sheets_client():
     creds = get_credentials(["https://www.googleapis.com/auth/spreadsheets"])
     return build("sheets", "v4", credentials=creds).spreadsheets()
+
+
+def calendar_client():
+    creds = get_credentials(["https://www.googleapis.com/auth/calendar.readonly"])
+    return build("calendar", "v3", credentials=creds)
 
 
 # ─── Telegram ─────────────────────────────────────────────────────────────────
@@ -235,14 +337,18 @@ def update_status(svc_sheets, sheet_row, new_status="Replied"):
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    print(f"[{datetime.now(timezone.utc).isoformat()}] Gmail reply check starting...")
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Gmail reply check + interview follow-up starting...")
 
     try:
         svc_gmail  = gmail_client()
         svc_sheets = sheets_client()
+        svc_cal    = calendar_client()
     except Exception as e:
         print(f"ERROR: Auth failed — {e}", file=sys.stderr)
         sys.exit(1)
+
+    # — Interview follow-up check (merged here, no separate cron needed) —
+    check_interview_followups(svc_sheets, svc_cal)
 
     # Load who we're waiting on
     outreach_rows = load_outreach_rows(svc_sheets)
