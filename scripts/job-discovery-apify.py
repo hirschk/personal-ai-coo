@@ -98,8 +98,17 @@ def load_network():
                 name, company, title = parts[0], parts[1], parts[2]
                 if not company or company in ("Company", "---") or "---" in name or name == "Name":
                     continue
+                # Extract LinkedIn URL from markdown link in 4th column if present
+                linkedin_url = ""
+                if len(parts) >= 4:
+                    link_col = parts[3]
+                    import re as _re
+                    m = _re.search(r'\(([^)]+)\)', link_col)
+                    if m:
+                        linkedin_url = m.group(1)
                 companies[company.lower()].append({
-                    "name": name, "title": title, "company": company
+                    "name": name, "title": title, "company": company,
+                    "linkedin_url": linkedin_url
                 })
     except Exception as e:
         print(f"  ⚠ Network error: {e}", file=sys.stderr)
@@ -149,11 +158,21 @@ def score_network(contacts):
         return 0.0, None
     for c in contacts:
         if any(x in c["title"].lower() for x in ["product", " pm", "chief"]):
-            return 1.0, f"{c['name']} ({c['title']} at {c['company']})"
+            url = c.get("linkedin_url", "")
+            label = f"{c['name']} ({c['title']} at {c['company']})"
+            path = f"[{label}]({url})" if url else label
+            return 1.0, path
     for c in contacts:
         if any(x in c["title"].lower() for x in ["recruit", "talent", "hr", "people"]):
-            return 0.8, f"{c['name']} (Recruiter at {c['company']})"
-    return 0.6, f"{contacts[0]['name']} ({contacts[0]['title']})"
+            url = c.get("linkedin_url", "")
+            label = f"{c['name']} (Recruiter at {c['company']})"
+            path = f"[{label}]({url})" if url else label
+            return 0.8, path
+    c = contacts[0]
+    url = c.get("linkedin_url", "")
+    label = f"{c['name']} ({c['title']})"
+    path = f"[{label}]({url})" if url else label
+    return 0.6, path
 
 def is_pm_role(title: str) -> bool:
     """Return False if the title looks like a non-PM role.
@@ -578,6 +597,24 @@ def main():
             friday_q += f"\n✅ {weekly_count} outreach sent this week — on track."
 
     send_telegram(brief + crm + friday_q)
+
+    # Sync key state to MEMORY.md after each run
+    try:
+        memory_path = os.path.join(WORKSPACE, "MEMORY.md")
+        with open(memory_path) as f:
+            mem = f.read()
+        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        new_status = f"Last job brief run: {today_str} — {len(scored)} jobs scored, {len(top5)} sent"
+        if "Last job brief run:" in mem:
+            import re
+            mem = re.sub(r"Last job brief run:.*", new_status, mem)
+        else:
+            mem = mem.rstrip() + f"\n\n## Last Run\n{new_status}\n"
+        with open(memory_path, "w") as f:
+            f.write(mem)
+        print("✅ MEMORY.md updated")
+    except Exception as e:
+        print(f"⚠ MEMORY.md sync failed: {e}")
     print("✅ Telegram brief sent")
     return 0
 
