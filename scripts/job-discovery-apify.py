@@ -574,10 +574,19 @@ def main():
         "top_5": top5,
         "all_scored": scored[:20],
     }
+    # Save to jobs-today.json (used by evening nudge + other scripts)
     out_path = os.path.join(WORKSPACE, "jobs-today.json")
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     print(f"✅ Saved to {out_path}")
+
+    # Also save to dated log for persistent history
+    logs_dir = os.path.join(WORKSPACE, "logs")
+    os.makedirs(logs_dir, exist_ok=True)
+    dated_path = os.path.join(logs_dir, f"jobs-{datetime.now().strftime('%Y-%m-%d')}.json")
+    with open(dated_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"✅ Saved dated log to {dated_path}")
 
     print("Fetching CRM data...")
     followups = get_followups()
