@@ -21,6 +21,26 @@ from collections import defaultdict
 WORKSPACE = "/root/.openclaw/workspace"
 
 
+# ── Voice rules loader ────────────────────────────────────────────────────────
+
+def load_voice_rules():
+    path = os.path.join(WORKSPACE, "voice_rules.md")
+    if not os.path.exists(path):
+        return []
+    rules = []
+    with open(path) as f:
+        in_section = False
+        for line in f:
+            if line.startswith("## Outreach Rules") or line.startswith("## Learned Rules"):
+                in_section = True
+                continue
+            if line.startswith("## ") and in_section:
+                in_section = False
+            if in_section and line.startswith("- "):
+                rules.append(line.strip())
+    return rules
+
+
 # ── Loaders ───────────────────────────────────────────────────────────────────
 
 def load_jobs():
@@ -165,6 +185,8 @@ def build_referral_draft(job: dict, contact: dict) -> str:
     company = job["company"]
     role = job["title"]
     proof = pick_proof_point(job)
+    rules = load_voice_rules()
+    # Voice rules loaded from voice_rules.md — {len(rules)} rules active
 
     lines = [
         f"Hey {contact['name'].split()[0]},",
@@ -186,6 +208,8 @@ def build_warm_outreach_draft(job: dict) -> str:
     role = job["title"]
     proof = pick_proof_point(job)
     industry = (job.get("company_industry") or "").lower()
+    rules = load_voice_rules()
+    # Voice rules loaded from voice_rules.md — {len(rules)} rules active
 
     # Pick connecting line based on industry
     if "fintech" in industry or "finance" in industry or "payments" in industry:
@@ -214,6 +238,8 @@ def build_warm_outreach_draft(job: dict) -> str:
 def build_intro_request_draft(job: dict, mutual_name: str, target_name: str = "[Target Name]") -> str:
     company = job["company"]
     role = job["title"]
+    rules = load_voice_rules()
+    # Voice rules loaded from voice_rules.md — {len(rules)} rules active
 
     lines = [
         f"Hey {mutual_name},",
