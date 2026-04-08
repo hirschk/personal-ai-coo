@@ -113,13 +113,26 @@ In `scripts/job-discovery-apify.py`, update:
 # Job discovery brief — Mon/Wed/Fri 11am EST
 0 16 * * 1,3,5 python3 /path/to/scripts/cron-job-discovery.sh
 
-# Interview follow-up — daily 2pm EST
-0 19 * * * python3 /path/to/scripts/interview-followup.py
+# Outreach follow-up sequence (Day 3/5/7/14) — daily 9:30am EST
+30 14 * * * python3 /path/to/scripts/followup-sequence.py
 
-# Evening nudge — daily 6pm EST
+# Afternoon check-in — daily 5:30pm EST (silent if actioned)
+30 22 * * * python3 /path/to/scripts/afternoon-checkin.py
+
+# LinkedIn content prompt — Mon/Wed/Fri 6pm EST
+0 23 * * 1,3,5 python3 /path/to/scripts/linkedin-content-prompt.py
+
+# Evening nudge — daily 6pm EST (silent if nothing to do)
 0 23 * * * python3 /path/to/scripts/evening-nudge.py
 
-# Gmail reply check — every 2 hours
+# Ideas structuring — daily 7pm EST (silent if no pending ideas)
+0 0 * * * python3 /path/to/scripts/ideas-structure.py
+
+# Friday weekly check-in — 5:45pm EST
+45 22 * * 5 python3 /path/to/scripts/friday-checkin.py
+
+# Gmail reply check + interview follow-up — every 2 hours
+# (interview thank-you fires automatically when a calendar event ends)
 0 */2 * * * python3 /path/to/scripts/gmail-reply-check.py
 ```
 
