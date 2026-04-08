@@ -19,7 +19,9 @@ from apify_client import ApifyClient
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
-APIFY_TOKEN      = os.environ.get("APIFY_API_TOKEN", "YOUR_APIFY_TOKEN_HERE")
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+APIFY_TOKEN = os.environ.get("APIFY_API_TOKEN", "")
 TELEGRAM_TOKEN   = "REDACTED"
 TELEGRAM_CHAT_ID = "8768439197"
 WORKSPACE        = "/root/.openclaw/workspace"
