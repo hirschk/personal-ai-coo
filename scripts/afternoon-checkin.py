@@ -55,26 +55,35 @@ def sheets_client():
 
 
 def get_unactioned_jobs():
-    """Return list of jobs with status 'new' from the Jobs sheet."""
+    """Load unactioned jobs from jobs-today.json cache. Falls back to Sheets if stale."""
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    cache_path = os.path.join(WORKSPACE, "jobs-today.json")
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path) as f:
+                cache = json.load(f)
+            if cache.get("timestamp", "")[:10] == today_str:
+                # Get actioned companies from sheet (one small call)
+                svc = sheets_client()
+                actioned = set()
+                if svc:
+                    rows = svc.values().get(spreadsheetId=SHEET_ID,
+                        range="Jobs!A2:I100").execute().get("values", [])
+                    actioned = {r[0].lower() for r in rows if len(r) >= 9 and r[8].lower() != "new"}
+                return [
+                    {"company": j["company"], "role": j["title"]}
+                    for j in cache.get("all_scored", cache.get("top_5", []))
+                    if j["company"].lower() not in actioned
+                ]
+        except Exception as e:
+            print(f"[checkin] cache read failed, falling back to Sheets: {e}")
+    # Fallback: full Sheets read
     svc = sheets_client()
-    if not svc:
-        return []
+    if not svc: return []
     try:
-        result = svc.values().get(
-            spreadsheetId=SHEET_ID,
-            range="Jobs!A2:J100"
-        ).execute()
-        rows = result.get("values", [])
-        unactioned = []
-        for row in rows:
-            if len(row) < 2:
-                continue
-            company = row[0] if len(row) > 0 else ""
-            role    = row[1] if len(row) > 1 else ""
-            status  = row[8] if len(row) > 8 else "new"
-            if status.lower() == "new" and company and role:
-                unactioned.append({"company": company, "role": role})
-        return unactioned
+        rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
+        return [{"company": r[0], "role": r[1]} for r in rows
+                if len(r) >= 9 and r[8].lower() == "new" and r[0] and r[1]]
     except Exception as e:
         print(f"[checkin] ⚠ Jobs fetch failed: {e}", file=sys.stderr)
         return []
