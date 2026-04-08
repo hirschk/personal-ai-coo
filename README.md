@@ -1,8 +1,16 @@
-# Sterl — Network-First Job Search Agent
+# Personal AI COO
 
-An autonomous job search agent that runs on a VPS, scrapes LinkedIn via Apify, scores jobs against your network, and delivers a daily brief via Telegram.
+A personal AI chief operating officer that runs on a VPS and manages your job search, LinkedIn content, and ideas — delivered entirely through Telegram.
 
-Built on [OpenClaw](https://openclaw.ai) + Claude Sonnet.
+Built on [OpenClaw](https://openclaw.ai) + Claude Sonnet. Three domains, one system, zero babysitting.
+
+**Domain 1: Job Search** — scrapes LinkedIn, scores jobs against your network, drafts warm outreach, follows up by name, tracks everything in Google Sheets.
+
+**Domain 2: LinkedIn Content** — prompts you 3x/week, drafts posts in your voice, learns from your edits.
+
+**Domain 3: Ideas OS** — captures ideas, structures them with AI, resurfaces them at the right time, drives them to completion.
+
+Everything scheduled around your energy — high focus in the morning, silence in the afternoon, creative in the evening.
 
 ---
 
