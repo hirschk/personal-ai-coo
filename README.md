@@ -18,6 +18,12 @@ Nothing drops. If you don't action something, it carries forward automatically u
 
 ---
 
+## Cron Schedule
+
+![Cron Schedule](cron-schedule.jpg)
+
+---
+
 ## Architecture
 
 ![Architecture](architecture.jpg)
