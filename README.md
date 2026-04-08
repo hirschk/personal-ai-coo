@@ -30,6 +30,10 @@ Nothing drops. If you don't action something, it carries forward automatically u
 
 > Note: brief fires Mon/Wed/Fri (not daily). Follow-up cadence is Day 3/5/7/14.
 
+## Pipeline
+
+![Pipeline](pipeline.jpg)
+
 ---
 
 ## Stack
