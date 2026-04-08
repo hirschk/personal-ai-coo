@@ -21,6 +21,14 @@ Last updated: 2026-04-07
 - Under 200 words
 - First person
 
+## LinkedIn Post Footer (always append)
+
+```
+Open to my next role. Head of Product or Senior PM, AI-native companies. NYC, LA, Miami, Austin, or remote. Hit me if AI is core to what you're building.
+```
+
+---
+
 ## Learned Rules (from edits)
 _(none yet — added automatically when Hirsch pastes edited drafts)_
 
