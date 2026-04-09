@@ -91,4 +91,26 @@ crontab -e
 
 ---
 
+## 7. Dual Instance / Double Billing
+
+**Symptom:** API costs spike unexpectedly. Two OpenClaw instances running simultaneously (e.g. Mac + VPS).
+
+**Fix:** Kill the non-VPS instance. Only one instance should ever run.
+
+**Prevention:** OpenClaw should only run on the VPS (67.205.179.96). Do not run it locally on the Mac.
+
+---
+
+## Config Freeze — Do Not Change
+
+The following config is intentionally set and optimized. Do not change without a strong reason:
+
+- `heartbeat.every: "0m"` — heartbeats OFF. Cron jobs handle all scheduled tasks. Re-enabling adds cost with no benefit.
+- `params.cacheRetention: "long"` — maximizes cache hits, reduces input token costs significantly.
+- `params.maxTokens: 1500` — caps output tokens per response.
+- `cron/jobs.json` — delivery.to is set to `8768439197` on all jobs. Already correct.
+- Single VPS instance only — never run OpenClaw on Mac simultaneously.
+
+---
+
 *Add new failure modes here as they're discovered.*
