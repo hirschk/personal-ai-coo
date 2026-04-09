@@ -32,10 +32,11 @@ TELEGRAM_TOKEN   = "REDACTED"
 TELEGRAM_CHAT_ID = "8768439197"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 SHEET_RANGE      = "Outreach!A2:H100"
+TASKS_RANGE      = "Tasks!A2:F200"
 GOG_TOKEN_FILE   = os.path.join(WORKSPACE, "config/gog-token.json")
 CLIENT_SECRET    = os.path.join(WORKSPACE, "google_client_secret.json")
 
-# Column indices (0-based)
+# Column indices (0-based) — Outreach sheet
 COL_DATE     = 0  # A
 COL_NAME     = 1  # B
 COL_COMPANY  = 2  # C
@@ -44,6 +45,15 @@ COL_TYPE     = 4  # E
 COL_STATUS   = 5  # F
 COL_FOLLOWUP = 6  # G
 COL_NOTES    = 7  # H
+
+# Column indices (0-based) — Tasks sheet
+# Task ID | Name | Project ID | Status | Due Date | Notes
+TASK_COL_ID        = 0
+TASK_COL_NAME      = 1
+TASK_COL_PROJECT   = 2
+TASK_COL_STATUS    = 3
+TASK_COL_DUE       = 4
+TASK_COL_NOTES     = 5
 
 
 # ── Google Sheets ─────────────────────────────────────────────────────────────
@@ -67,6 +77,42 @@ def sheets_client():
     except Exception as e:
         print(f"[ERROR] Sheets auth failed: {e}", file=sys.stderr)
         return None
+
+
+def load_tasks_due_today(svc):
+    """Load tasks from Tasks tab that are todo AND due today or overdue."""
+    try:
+        result = svc.values().get(
+            spreadsheetId=SHEET_ID,
+            range=TASKS_RANGE,
+        ).execute()
+        rows = result.get("values", [])
+    except Exception as e:
+        print(f"[ERROR] Could not load Tasks sheet: {e}", file=sys.stderr)
+        return []
+
+    today = datetime.now(timezone.utc).date()
+    due = []
+    for row in rows:
+        while len(row) < 6:
+            row.append("")
+        task_id  = row[TASK_COL_ID].strip()
+        name     = row[TASK_COL_NAME].strip()
+        status   = row[TASK_COL_STATUS].strip().lower()
+        due_str  = row[TASK_COL_DUE].strip()
+
+        if status != "todo":
+            continue
+        if not due_str or due_str.upper() == "TBD":
+            continue
+        try:
+            due_date = datetime.strptime(due_str, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if due_date <= today:
+            due.append({"id": task_id, "name": name, "due": due_date, "overdue": due_date < today})
+
+    return due
 
 
 def load_outreach_rows(svc):
@@ -310,6 +356,22 @@ def main():
 
     if not reminders:
         print("  ✅ No follow-ups due today.")
+
+    # ── Tasks due today / overdue ─────────────────────────────────────────────
+    tasks_due = load_tasks_due_today(svc)
+    print(f"\n  {len(tasks_due)} task(s) due today or overdue")
+
+    if tasks_due:
+        lines = ["📋 *Tasks due today:*", ""]
+        for t in tasks_due:
+            label = "⚠️ overdue" if t["overdue"] else "today"
+            lines.append(f"• [{t['id']}] {t['name']} — {label} ({t['due'].strftime('%b %d')})")
+        task_msg = "\n".join(lines)
+        print(f"  → Sending tasks reminder")
+        try:
+            send_telegram(task_msg)
+        except Exception as e:
+            print(f"  ⚠ Tasks Telegram failed: {e}", file=sys.stderr)
 
     print(f"[{datetime.now().isoformat()}] followup-sequence done\n")
     return 0
