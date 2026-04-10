@@ -14,6 +14,7 @@ Sterl — Hirsch's external prefrontal cortex and COO. Running on OpenClaw, Digi
 
 - **Name:** Hirsch Keshav — Senior AI PM, full-stack AI builder
 - **Telegram ID:** 8768439197
+- **Title:** Senior PM (most recently at Hearth, Series B fintech — NOT Head of Product)
 - **Target roles:** Head of Product, VP Product, Director of Product
 - **Target industries:** Fintech, AI-native, AI-forward
 - **Timezone:** UTC-5 year-round (Playa del Carmen, Quintana Roo — no DST, permanently UTC-5)
@@ -31,62 +32,57 @@ Sterl — Hirsch's external prefrontal cortex and COO. Running on OpenClaw, Digi
 
 ---
 
-## Tasks & Projects
+## Google Sheets (Source of Truth)
 
-Tasks and Projects live in Google Sheets (Sheet ID: `1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co`).
-- **Projects tab** = active/parked/done projects (formerly "Ideas")
-- **Tasks tab** = individual actions. Columns: `Task ID | Name | Project ID | Status (todo/in-progress/done/parked) | Due Date | Notes`
-- `Project ID` is nullable — blank = free-floating task
-- Source of truth is always Sheets. Never cache task state in memory. Only load when asked.
+Sheet ID: `1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co`
+
+Tabs:
+- **Interviews** — active interview pipeline
+- **Outreach** — all DMs/emails sent, follow-up dates
+- **Jobs** — scraped job listings, status, priority
+- **Contacts** — key people, companies, notes
+- **KPIs** — weekly metrics
+- **Projects** — active/parked/done projects
+- **Tasks** — individual actions (`Task ID | Name | Project ID | Status | Due Date | Notes`)
+
+Never cache pipeline state in MEMORY.md. Always load from Sheets when asked.
 
 ---
 
 ## Infrastructure
 
-- **Model:** Claude Sonnet. Haiku for cron scripts (ideas-structure, linkedin-draft, voice-update).
+- **Model:** Claude Sonnet. Haiku for cron scripts.
 - **Prompt caching:** ON (`cacheRetention: long`)
 - **maxTokens:** 1500
 - **Heartbeats:** OFF
 - **Google OAuth:** Sheets (write) + Gmail (readonly) + Calendar (readonly)
 - **Apify token:** in `/root/.openclaw/workspace/.env` and `/etc/environment`
-- **Sheet ID:** `1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co`
 
 ---
 
-## Active Pipeline (as of 2026-04-08)
+## Where to Look Things Up
 
-### Interviews
-| Company | Role | Stage | Notes |
-|---|---|---|---|
-| Ramp | Product Manager | Recruiter Screen | Done Apr 8. Thank-you sent to Yeno. |
-| Phoenix Technologies | Senior PM | CPO Round 2 | Done Apr 8. Thank-you sent to Timothy Schulz. Demoed Sterl. |
-| Defense SaaS (James) | VP Product | Shortlisting | Via James Winters. **DO NOT mention Claude/OpenClaw.** 1099, tax treaty TBD. |
-| Katalyze AI | Head of Product | Passed | Comp mismatch — under $250K |
+- **Pipeline / interviews / stages** → Interviews tab
+- **Outreach / follow-up dates / who was contacted** → Outreach tab
+- **Job listings / company status** → Jobs tab
+- **People / relationships / notes on contacts** → Contacts tab
+- **Weekly metrics** → KPIs tab
+- **Projects** → Projects tab
+- **Tasks / to-dos** → Tasks tab
 
-### Outreach Awaiting Reply
-| Name | Company | Sent | Days |
-|---|---|---|---|
-| James Chiu | Cedar | Apr 7 | 1 |
-| Matas Sriubiskis | Instacart | Apr 7 | 1 |
-| Jason Finkelstein | Amex | Apr 8 | D7 follow-up sent. Next: Apr 15 |
-| Monica Rincon | JP Morgan | Apr 8 | D7 follow-up sent. Next: Apr 15 |
-| Austin Osborne | JP Morgan | Apr 8 | D7 follow-up sent. Next: Apr 15 |
-| Tejas Savalia | JP Morgan | Apr 8 | D7 follow-up sent. Next: Apr 15 |
-
-### Unactioned / Pending
-- Plaid (Ali Vira — PM), Chime (Shreya Sudarshana — Sr PM), Navan (Alia Kaussar — Sr PM) — warm connections, draft Expandi-style outreach leading with Ramp interview
-- Monzo x2 — parked (no connection)
+When Hirsch asks anything about people, pipeline, outreach, or tasks — fetch from Sheets first. Don't guess from memory.
 
 ---
 
-## Key Contacts
+## Operating Rules
 
-- Jason Li — Design Director @ Ramp — referred resume
-- James Chiu — Director, Product Design @ Cedar
-- James Winters — Recruiter, Defense SaaS
-- Matas Sriubiskis — Senior PM @ Instacart
-- Yeno — Recruiter @ Ramp
-- Timothy Schulz — CPO @ Phoenix Technologies
+1. **Carry-Forward:** never drop anything unless Hirsch says pass/done/park
+2. **Interview Follow-Up:** thank-you within 2h of interview, re-fire at 24h if not confirmed
+3. **Friday:** "Is the pipeline moving? Yes or no."
+4. **Memory standup:** read MEMORY.md at session start, write summary at session end
+5. **Acknowledge immediately** for any task >30 seconds, confirm when done
+6. **Defense SaaS (James Winters):** DO NOT mention Claude or OpenClaw. Ever.
+7. **"Locked in" = sheet updated**, not just MEMORY.md
 
 ---
 
@@ -100,16 +96,6 @@ When running batch outreach from a CSV or list:
 
 ---
 
-## Operating Rules
-
-1. **Carry-Forward:** never drop anything unless Hirsch says pass/done/park
-2. **Interview Follow-Up:** thank-you within 2h of interview, re-fire at 24h if not confirmed
-3. **Friday:** "Is the pipeline moving? Yes or no."
-4. **Memory standup:** read MEMORY.md at session start, write summary at session end
-5. **Acknowledge immediately** for any task >30 seconds, confirm when done
-
----
-
 ## LinkedIn Voice Rules
 
 - Short sentences. No em dashes. No filler openers.
@@ -120,82 +106,25 @@ When running batch outreach from a CSV or list:
 
 ---
 
-## KPIs (baseline Mar 26 — Apr 8)
+## Corrections
 
-- Messages sent: 11 | LinkedIn posts: 5 | Interviews: 3 | Active pipeline: 3
+- **Hearth title:** Senior PM, not Head of Product. Always use "senior AI PM, most recently at Hearth (Series B fintech)" in outreach.
 
 ---
 
-## Lessons Learned (2026-04-10)
+## Lessons Learned
 
 - **UTC-5 always** — Playa del Carmen / Quintana Roo does not observe DST. Never assume EDT (UTC-4). Always UTC-5.
-- **Jobs status lifecycle:** `new → outreaching → applied → screening → interviewing`. "Outreaching" = messaged a connection, waiting for confirmation. Never mark "applied" until referral is confirmed.
-- **Telegram Markdown breaks on parens/slashes** — switch to HTML parse mode for all dynamic content. Use `<b>` not `*bold*`.
-- **Contacts in conversation ≠ contacts in sheet** — if it's not in the Jobs tab, the morning brief can't see it. Always load CSVs into the sheet immediately.
-- **Paused jobs should be skipped** — same as removed. Add to SKIP_JOB_STATUSES.
-- **Undated tasks are invisible by default** — script must surface them separately or they fall through forever.
-- **Section numbering** — render sections dynamically so numbering is always sequential regardless of which are empty.
-- **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC). Hirsch does /new twice a day to reset context.
+- **Jobs status lifecycle:** `new → outreaching → applied → screening → interviewing`. "Outreaching" = messaged a connection. Never mark "applied" until referral confirmed.
+- **Telegram Markdown breaks on parens/slashes** — use HTML parse mode for dynamic content. `<b>` not `*bold*`.
+- **Contacts in conversation ≠ contacts in sheet** — always load CSVs into sheet immediately.
+- **Paused jobs should be skipped** — add to SKIP_JOB_STATUSES.
+- **Undated tasks are invisible by default** — surface them separately.
+- **Section numbering** — render dynamically so numbering is always sequential.
+- **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
 ## Known Issues
 
 - [ ] Cron fires 16:00 UTC = 12pm EDT (not 11am) — adjust to 15:00 UTC if needed
 - [ ] Sunday silence not implemented
 - [ ] Anthropic key not in .env (needed for linkedin-draft.py subprocess)
-
-## Last Run
-Last job brief: 2026-04-08 — 38 scraped, 13 matched
-
-## Last Run
-Last session-close: 2026-04-10 — 0 commits, 1 crons ran, 2 active interviews
-
-### What was built
-- **Tasks tab** created in Google Sheets: `Task ID | Name | Project ID | Status | Due Date | Notes` — 6 tasks loaded (T001–T006)
-- **Projects tab** renamed from Ideas, migrated to schema: `Project ID | Name | Status | Due Date | Notes` — P001 Fintech outreach, P002 LinkedIn Expandi funnel
-- **followup-sequence.py** extended: reads Tasks tab, sends tasks due today/overdue as morning brief section
-- **friday-checkin.py** rebuilt cleanly: active projects + incomplete task counts + overdue solo tasks
-- **SOUL.md** updated: "proactive" redefined as removing friction (deliver drafts, never just remind)
-- Committed `fe006bb` — scripts/followup-sequence.py + scripts/friday-checkin.py
-- Idle reset bumped from 2h → 6h in openclaw.json
-
-### Outreach sent today (Apr 9)
-| Name | Company | Notes |
-|---|---|---|
-| Ali Vira | Plaid | Staff PM AI Foundations. Resume attached. |
-| Shreya Sudarshana | Chime | Group PM Platform role. |
-| Alia Kaussar | Navan | AI financial automation angle. |
-
-### Pipeline update
-- **Ramp**: Advanced to Hiring Manager round. Interview Apr 10 12:00–12:30pm EST with William Simmons (Dir, Financial Efficiency & Intelligence)
-- **Phoenix Technologies**: CPO round 2 done Apr 8. Thank-you sent. Awaiting next step.
-- **Defense SaaS (James Winters)**: Shortlisting. DO NOT mention Claude/OpenClaw.
-
-### Follow-up schedule
-- Apr 12: James Chiu (Cedar) D7, Matas Sriubiskis (Instacart) D7 — D3 fired Apr 10, sheet advanced
-- Apr 12: Ali Vira (Plaid), Shreya Sudarshana (Chime), Alia Kaussar (Navan) D3
-- Apr 15: JP Morgan x3 + Amex D14
-
----
-
-## Session Log: 2026-04-10
-
-### Pipeline
-- **Ramp**: Hiring Manager interview today 12:00–12:30pm EST w/ William Simmons (Dir, Financial Efficiency & Intelligence)
-- **Phoenix Technologies**: Awaiting next step after CPO round 2 (Apr 8)
-- **Defense SaaS (James Winters)**: Shortlisting. DO NOT mention Claude/OpenClaw.
-
-### Uncontacted leads (surfaced by morning brief)
-- Basel Hegazi @ Confidential Jobs — Director of Product Management (AI)
-- Pabi Ambikainathan @ Iterable — Senior PM
-- Both appear in Section 2 (First contacts) every morning until actioned
-
-### What was built
-- **followup-sequence.py fully redesigned** — commit `0709808`
-  - Now sends 4-section morning brief daily (never silent unless everything empty)
-  - Section 1: Follow-ups due (D3/D7/D14) — stage normalized, handles "D14 (Apr 15)" format
-  - Section 2: First contacts not yet sent — Jobs w/ Network Path not in Outreach (carry-forward)
-  - Section 3: New contacts for today — up to 5 Jobs by Priority Score
-  - Section 4: Tasks due/overdue
-  - Root cause of missed D3s fixed: blank col-G rows now handled gracefully
-  - Bot token typo fixed: `_0xyFz3` → `_0xyF3`
-- Cron confirmed correct: 13:30 UTC = 9:30am EDT daily
