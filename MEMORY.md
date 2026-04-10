@@ -123,6 +123,23 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-10 (evening)
+
+### Done
+- MEMORY.md slimmed (~50% token reduction), pipeline data moved to Sheets as source of truth
+- Hearth title corrected everywhere: Senior PM, not Head of Product
+- Outreach Template 3 (intro request) rewritten to match best-practice guidelines
+- Interviews tab updated: Ramp → Apr 14 11am EST, William Simmons
+- Contacts tab: added James Winters, Matas Sriubiskis, Yeno, Timothy Schulz
+- "Where to Look Things Up" section added to MEMORY.md
+
+### Pending (Monday)
+- **OAuth token expired** — needs `gog auth add` re-auth before anything sheet-related works
+- **Follow-up dates** — move James Chiu, Matas, Ali Vira, Shreya, Alia all to Mon Apr 13 in Outreach tab (pushed from this Friday)
+- **Outreach blitz** — 25 messages next week, fintech focus, Ramp interview as social proof angle. Connection-based first, cold second.
+
+---
+
 ## Known Issues
 
 - [ ] Cron fires 16:00 UTC = 12pm EDT (not 11am) — adjust to 15:00 UTC if needed
