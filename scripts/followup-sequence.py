@@ -33,6 +33,7 @@ SKIP_JOB_STATUSES     = {"removed", "paused"}
 ACTIONED_JOB_STATUSES = {
     "applied", "screening", "interviewing", "paused",
     "rejected", "passed", "hired", "declined",
+    # "outreaching" is intentionally NOT here — stays visible until confirmed referral
 }
 
 

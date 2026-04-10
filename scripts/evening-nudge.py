@@ -23,6 +23,7 @@ MAX_NAMES        = 5
 TERMINAL_STATUS = {"replied", "meeting booked", "stale", "passed", "declined"}
 SKIP_JOB_STATUS = {"removed", "paused", "applied", "screening", "interviewing",
                    "rejected", "passed", "hired", "declined"}
+# "outreaching" intentionally excluded — stays active until referral confirmed
 
 
 def sheets_client():
