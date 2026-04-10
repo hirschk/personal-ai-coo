@@ -203,7 +203,7 @@ def section_first_contacts(svc, outreach_names):
             "network_path": network_path,
         })
 
-    return pending
+    return pending[:MAX_NEW_CONTACTS]
 
 
 # ---------------------------------------------------------------------------
@@ -301,50 +301,43 @@ def main():
     outreach_names = {pad(r, 1)[0].strip().lower() for r in outreach_rows if r}
 
     # Collect sections
-    followups      = section_followups(svc, today, today_str)
-    first_contacts = section_first_contacts(svc, outreach_names)
-    new_contacts   = section_new_contacts(svc, outreach_names)
+    followups    = section_followups(svc, today, today_str)
+    new_contacts = section_new_contacts(svc, outreach_names)
     tasks, undated_tasks = section_tasks(svc, today)
 
     # Bail if truly nothing
-    if not followups and not first_contacts and not new_contacts and not tasks and not undated_tasks:
+    if not followups and not new_contacts and not tasks and not undated_tasks:
         print("[INFO] Nothing to report today.")
         return
 
-    lines = ["*Morning Brief* -- " + today_str, ""]
+    lines = ["<b>Morning Brief — " + today_str + "</b>", ""]
 
-    # Section 1
+    # Section 1 — Follow-ups (highest priority)
     if followups:
-        lines.append("*1. Follow-ups due (" + str(len(followups)) + ")*")
+        lines.append("<b>1. Follow-ups due (" + str(len(followups)) + ")</b>")
         for item in followups:
-            lines.append("  * [" + item["stage"] + "] " + item["label"] + " via " + item["channel"])
+            lines.append("  • [" + item["stage"] + "] " + item["label"] + " via " + item["channel"])
         lines.append("")
 
-    # Section 2
-    if first_contacts:
-        lines.append("*2. First contacts not yet sent (" + str(len(first_contacts)) + ")*")
-        for item in first_contacts:
-            lines.append("  * " + item["contact"] + " @ " + item["company"] + " -- " + item["role"])
-        lines.append("")
-
-    # Section 3
+    # Section 2 — New contacts (top 5, carry-forward included)
     if new_contacts:
-        lines.append("*3. New contacts for today (" + str(len(new_contacts)) + ")*")
+        lines.append("<b>2. New contacts for today (" + str(len(new_contacts)) + ")</b>")
         for item in new_contacts:
-            lines.append("  * " + item["contact"] + " @ " + item["company"] + " -- " + item["role"])
+            lines.append("  • " + item["contact"] + " @ " + item["company"] + " — " + item["role"])
         lines.append("")
 
-    # Section 4
+    # Section 3 — Tasks due/overdue
     if tasks:
-        lines.append("*4. Tasks due / overdue (" + str(len(tasks)) + ")*")
+        lines.append("<b>3. Tasks due / overdue (" + str(len(tasks)) + ")</b>")
         for item in tasks:
-            lines.append("  * " + item["label"] + " (due " + item["due"] + ")")
+            lines.append("  • " + item["label"] + " (due " + item["due"] + ")")
         lines.append("")
 
+    # Section 4 — Undated tasks
     if undated_tasks:
-        lines.append("*5. No due date set (" + str(len(undated_tasks)) + ")*")
+        lines.append("<b>4. No due date set (" + str(len(undated_tasks)) + ")</b>")
         for item in undated_tasks:
-            lines.append("  * " + item["label"])
+            lines.append("  • " + item["label"])
 
     message = "\n".join(lines)
     print(message)
