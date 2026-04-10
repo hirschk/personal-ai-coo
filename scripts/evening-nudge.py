@@ -1,141 +1,138 @@
 #!/usr/bin/env python3
 """
-Sterl Evening Nudge — 6pm EST daily (23:00 UTC)
-Pings Hirsch if there are unactioned jobs or overdue outreach.
-Silent if nothing needs attention.
+Sterl Session-End Nudge
+Fires twice daily: 12:30pm EST (17:30 UTC) and 9:45pm EST (02:45 UTC)
+Purpose: accountability check on today's outreach targets.
+Silent if everything is actioned. Max 5 names.
 """
 
-import json
-import os
-import sys
-import urllib.request
-from datetime import datetime, timezone, timedelta
+import json, os, sys, urllib.request, urllib.error
+from datetime import datetime, timezone
 from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
-SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 WORKSPACE        = "/root/.openclaw/workspace"
 TELEGRAM_TOKEN   = "REDACTED"
 TELEGRAM_CHAT_ID = "8768439197"
+SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
+GOG_TOKEN_FILE   = os.path.join(WORKSPACE, "config/gog-token.json")
+CLIENT_SECRET    = os.path.join(WORKSPACE, "google_client_secret.json")
+MAX_NAMES        = 5
 
-def load_seen_cache():
-    """Load jobs-today.json cache."""
-    import json, os
-    path = os.path.join(WORKSPACE, "jobs-today.json")
-    if not os.path.exists(path):
-        return None
-    with open(path) as f:
-        return json.load(f)
+TERMINAL_STATUS = {"replied", "meeting booked", "stale", "passed", "declined"}
+SKIP_JOB_STATUS = {"removed", "paused", "applied", "screening", "interviewing",
+                   "rejected", "passed", "hired", "declined"}
+
 
 def sheets_client():
-    with open(os.path.join(WORKSPACE, "config/gog-token.json")) as f:
+    with open(GOG_TOKEN_FILE) as f:
         tok = json.load(f)
-    with open(os.path.join(WORKSPACE, "google_client_secret.json")) as f:
+    with open(CLIENT_SECRET) as f:
         secret = json.load(f)
     cfg = secret.get("installed") or secret.get("web") or secret
     creds = Credentials(
-        token=None, refresh_token=tok["refresh_token"],
+        token=tok.get("token"), refresh_token=tok["refresh_token"],
         token_uri="https://oauth2.googleapis.com/token",
         client_id=cfg["client_id"], client_secret=cfg["client_secret"],
         scopes=["https://www.googleapis.com/auth/spreadsheets"],
     )
+    if creds.expired or not creds.valid:
+        creds.refresh(Request())
     return build("sheets", "v4", credentials=creds).spreadsheets()
+
+
+def get_range(svc, r):
+    try:
+        return svc.values().get(spreadsheetId=SHEET_ID, range=r).execute().get("values", [])
+    except Exception as e:
+        print(f"[ERROR] get_range {r}: {e}", file=sys.stderr)
+        return []
+
+
+def pad(row, n):
+    while len(row) < n:
+        row.append("")
+    return row
+
 
 def send_telegram(text):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": text,
-               "parse_mode": "Markdown", "disable_web_page_preview": True}
-    req = urllib.request.Request(url, data=json.dumps(payload).encode(),
-                                 headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read().decode())
+    payload = json.dumps({
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML"
+    }).encode()
+    req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return r.status == 200
+    except urllib.error.HTTPError as e:
+        print(f"[ERROR] Telegram {e.code}: {e.read().decode()}", file=sys.stderr)
+        return False
+    except Exception as e:
+        print(f"[ERROR] Telegram: {e}", file=sys.stderr)
+        return False
+
 
 def main():
-    svc = sheets_client()
     today = datetime.now(timezone.utc).date()
+    today_str = today.strftime("%Y-%m-%d")
 
-    # Unactioned jobs — load from jobs-today.json cache first, fall back to Sheets
-    unactioned = []
-    cache_path = os.path.join(WORKSPACE, "jobs-today.json")
-    if os.path.exists(cache_path):
-        try:
-            with open(cache_path) as f:
-                cache = json.load(f)
-            # Only use cache if it's from today
-            ts = cache.get("timestamp", "")
-            if ts[:10] == str(today):
-                # Cross-reference with sheet for current status
-                rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:I100",
-                    fields="values").execute().get("values", [])
-                actioned = {row[0].lower() for row in rows if len(row) >= 9 and row[8].lower() != "new"}
-                for j in cache.get("all_scored", cache.get("top_5", [])):
-                    if j["company"].lower() not in actioned:
-                        unactioned.append({"company": j["company"], "role": j["title"],
-                                           "score": j["priority_score"], "url": j["url"]})
-            else:
-                raise ValueError("Cache is stale")
-        except Exception:
-            # Fall back to full sheet read
-            rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
-            for row in rows:
-                if len(row) < 9: continue
-                company, role, status = row[0], row[1], row[8]
-                score = row[4] if len(row) > 4 else ""
-                url = row[3] if len(row) > 3 else ""
-                if status.lower() == "new":
-                    unactioned.append({"company": company, "role": role, "score": score, "url": url})
-    else:
-        rows = svc.values().get(spreadsheetId=SHEET_ID, range="Jobs!A2:J100").execute().get("values", [])
-        for row in rows:
-            if len(row) < 9: continue
-            company, role, status = row[0], row[1], row[8]
-            score = row[4] if len(row) > 4 else ""
-            url = row[3] if len(row) > 3 else ""
-            if status.lower() == "new":
-                unactioned.append({"company": company, "role": role, "score": score, "url": url})
+    svc = sheets_client()
 
-    # Overdue outreach
-    rows2 = svc.values().get(spreadsheetId=SHEET_ID, range="Outreach!A2:H100").execute().get("values", [])
-    overdue = []
-    for row in rows2:
-        if len(row) < 6: continue
-        date, name, company, channel, msg_type, status = row[0], row[1], row[2], row[3], row[4], row[5]
-        if status in ("Replied", "Meeting Booked"): continue
-        if status == "Sent" and date:
-            try:
-                sent = datetime.strptime(date, "%Y-%m-%d").date()
-                if (today - sent).days >= 3:
-                    overdue.append({"name": name, "company": company,
-                                    "sent": date, "days_ago": (today - sent).days})
-            except: pass
+    outreach_rows  = get_range(svc, "Outreach!A2:H200")
+    outreach_names = {pad(r, 2)[1].strip().lower() for r in outreach_rows if r}
 
-    # Nothing to do — stay silent
-    if not unactioned and not overdue:
-        print("Nothing to nudge. Silent.")
-        return 0
+    pending = []
 
-    lines = ["🌆 *Evening check-in*\n"]
+    # Today's outreach rows not yet in terminal state
+    for row in outreach_rows:
+        row = pad(row, 8)
+        date_str = row[0].strip()
+        name     = row[1].strip()
+        company  = row[2].strip()
+        status   = row[5].strip().lower()
 
-    if unactioned:
-        lines.append(f"📥 *{len(unactioned)} job{'s' if len(unactioned) > 1 else ''} not yet actioned:*")
-        for j in unactioned:
-            line = f"  • *{j['role']}* @ {j['company']}"
-            if j["score"]: line += f" (score {j['score']})"
-            if j["url"]: line += f" — [View]({j['url']})"
-            lines.append(line)
+        if not name or date_str != today_str:
+            continue
+        if status in TERMINAL_STATUS:
+            continue
 
-    if overdue:
-        lines.append(f"\n🔔 *{len(overdue)} follow-up{'s' if len(overdue) > 1 else ''} overdue:*")
-        for f in overdue:
-            lines.append(f"  • *{f['name']}* @ {f['company']} — {f['days_ago']}d since last contact")
+        pending.append(f"{name} at {company}")
 
-    lines.append("\n_Reply with a job number to draft outreach, or 'pass [num]' to skip it._")
+    # First contacts in Jobs not yet in Outreach at all
+    job_rows = get_range(svc, "Jobs!A2:J200")
+    for row in job_rows:
+        row = pad(row, 10)
+        company      = row[0].strip()
+        network_path = row[7].strip()
+        job_status   = row[8].strip().lower()
+
+        if job_status in SKIP_JOB_STATUS or not network_path:
+            continue
+
+        contact = network_path.split("(")[0].strip()
+        if contact.lower() in outreach_names:
+            continue
+
+        pending.append(f"{contact} at {company}")
+
+    if not pending:
+        print("All actioned. Silent.")
+        return
+
+    pending = pending[:MAX_NAMES]
+
+    lines = ["<b>Before you close out:</b>", ""]
+    for p in pending:
+        lines.append(f"Did you message {p}?")
+    lines.append("")
+    lines.append("Just reply in plain language and I will update the sheet.")
 
     msg = "\n".join(lines)
     print(msg)
     send_telegram(msg)
-    print("Sent.")
-    return 0
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

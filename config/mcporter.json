@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "apify-linkedin-jobs": {
+      "baseUrl": "https://mcp.apify.com/linkedin-jobs-scraper"
+    },
+    "apify": {
+      "baseUrl": "https://api.apify.com"
+    }
+  }
+}

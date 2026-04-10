@@ -29,7 +29,7 @@ MAX_NEW_CONTACTS = 5
 STAGE_ORDER = ["D3", "D7", "D14"]
 STAGE_DAYS  = {"D3": 3, "D7": 7, "D14": 14}
 TERMINAL_STATUS       = {"replied", "meeting booked", "stale"}
-SKIP_JOB_STATUSES     = {"removed"}
+SKIP_JOB_STATUSES     = {"removed", "paused"}
 ACTIONED_JOB_STATUSES = {
     "applied", "screening", "interviewing", "paused",
     "rejected", "passed", "hired", "declined",
@@ -103,10 +103,17 @@ def update_outreach_row(svc, sheet_row, date_str, stage):
         print("[ERROR] update row " + str(sheet_row) + ": " + str(e), file=sys.stderr)
 
 
+def md_to_html(text):
+    """Convert simple *bold* markdown to HTML bold tags for Telegram."""
+    import re
+    # Replace *bold* with <b>bold</b>
+    text = re.sub(r'\*(.+?)\*', r'<b>\1</b>', text)
+    return text
+
 def send_telegram(text):
     url = "https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage"
     payload = json.dumps(
-        {"chat_id": TELEGRAM_CHAT_ID, "text": text, "parse_mode": "Markdown"}
+        {"chat_id": TELEGRAM_CHAT_ID, "text": md_to_html(text), "parse_mode": "HTML"}
     ).encode()
     req = urllib.request.Request(
         url, data=payload, headers={"Content-Type": "application/json"}
@@ -246,6 +253,7 @@ def section_new_contacts(svc, outreach_names):
 def section_tasks(svc, today):
     rows = get_range(svc, "Tasks!A2:F200")
     due = []
+    undated = []
     for row in rows:
         row = pad(row, 6)
         status      = row[3].strip().lower()
@@ -253,10 +261,15 @@ def section_tasks(svc, today):
         name        = row[1].strip()
         notes       = row[5].strip()
 
+        if not name:
+            continue
         if status in {"done", "cancelled", "complete"}:
             continue
+
         if not due_str_val:
+            undated.append({"label": name, "due": None})
             continue
+
         try:
             due_date = datetime.strptime(due_str_val, "%Y-%m-%d").date()
         except ValueError:
@@ -266,7 +279,7 @@ def section_tasks(svc, today):
             if notes:
                 label += " -- " + notes[:60]
             due.append({"label": label, "due": due_str_val})
-    return due
+    return due, undated
 
 
 # ---------------------------------------------------------------------------
@@ -290,10 +303,10 @@ def main():
     followups      = section_followups(svc, today, today_str)
     first_contacts = section_first_contacts(svc, outreach_names)
     new_contacts   = section_new_contacts(svc, outreach_names)
-    tasks          = section_tasks(svc, today)
+    tasks, undated_tasks = section_tasks(svc, today)
 
     # Bail if truly nothing
-    if not followups and not first_contacts and not new_contacts and not tasks:
+    if not followups and not first_contacts and not new_contacts and not tasks and not undated_tasks:
         print("[INFO] Nothing to report today.")
         return
 
@@ -325,6 +338,12 @@ def main():
         lines.append("*4. Tasks due / overdue (" + str(len(tasks)) + ")*")
         for item in tasks:
             lines.append("  * " + item["label"] + " (due " + item["due"] + ")")
+        lines.append("")
+
+    if undated_tasks:
+        lines.append("*5. No due date set (" + str(len(undated_tasks)) + ")*")
+        for item in undated_tasks:
+            lines.append("  * " + item["label"])
 
     message = "\n".join(lines)
     print(message)

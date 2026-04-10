@@ -1,5 +1,4 @@
 # Personal data — exclude from public repos
-MEMORY.md
 memory/
 network.md
 candidate_profile.md
@@ -33,7 +32,6 @@ __pycache__/
 google_client_secret.json
 credentials.json
 *.key
-USER.md
 sterl_os_spec_v1_1.md
 sterl_job_agent_spec_v2.md
 spec_gap_analysis.md
@@ -43,3 +41,19 @@ IDENTITY.md
 SOUL.md
 TOOLS.md
 outreach_templates.md
+
+# Secrets — never commit
+config/gog-token.json
+config/apify-token.txt
+config/apify.env
+config/mcporter.json
+*.env
+.env
+jobs-today.json
+seen-jobs.json
+ideas-pending.json
+logs/
+job_brief.py
+job_discovery.py
+.openclaw/
+.clawhub/
