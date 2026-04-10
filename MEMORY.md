@@ -126,6 +126,17 @@ When running batch outreach from a CSV or list:
 
 ---
 
+## Lessons Learned (2026-04-10)
+
+- **UTC-5 always** — Playa del Carmen / Quintana Roo does not observe DST. Never assume EDT (UTC-4). Always UTC-5.
+- **Jobs status lifecycle:** `new → outreaching → applied → screening → interviewing`. "Outreaching" = messaged a connection, waiting for confirmation. Never mark "applied" until referral is confirmed.
+- **Telegram Markdown breaks on parens/slashes** — switch to HTML parse mode for all dynamic content. Use `<b>` not `*bold*`.
+- **Contacts in conversation ≠ contacts in sheet** — if it's not in the Jobs tab, the morning brief can't see it. Always load CSVs into the sheet immediately.
+- **Paused jobs should be skipped** — same as removed. Add to SKIP_JOB_STATUSES.
+- **Undated tasks are invisible by default** — script must surface them separately or they fall through forever.
+- **Section numbering** — render sections dynamically so numbering is always sequential regardless of which are empty.
+- **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC). Hirsch does /new twice a day to reset context.
+
 ## Known Issues
 
 - [ ] Cron fires 16:00 UTC = 12pm EDT (not 11am) — adjust to 15:00 UTC if needed
