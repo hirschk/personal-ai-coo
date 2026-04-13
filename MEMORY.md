@@ -76,7 +76,8 @@ When Hirsch asks anything about people, pipeline, outreach, or tasks — fetch f
 
 ## Operating Rules
 
-1. **Carry-Forward:** never drop anything unless Hirsch says pass/done/park
+1. **Check before asking:** Always check the sheet (or relevant source) before asking Hirsch about status. Never ask him something you could look up yourself.
+2. **Carry-Forward:** never drop anything unless Hirsch says pass/done/park
 2. **Interview Follow-Up:** thank-you within 2h of interview, re-fire at 24h if not confirmed
 3. **Friday:** "Is the pipeline moving? Yes or no."
 4. **Memory standup:** read MEMORY.md at session start, write summary at session end
