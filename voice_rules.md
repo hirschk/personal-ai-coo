@@ -32,6 +32,11 @@ Open to my next role. Head of Product or Senior PM, AI-native companies. NYC, LA
 ## Learned Rules (from edits)
 _(none yet — added automatically when Hirsch pastes edited drafts)_
 
+## Learned Rules (from edits — Apr 13)
+- Drop filler warmers like "Good times" when reconnecting — let the shared context speak for itself
+- Close with something casual like "cheers man" when there's existing rapport — more natural than "Thanks either way"
+- Don't say "well deserved" on congrats — sounds hollow; just acknowledge the milestone and move on
+
 ## Learned Rules (from edits — Apr 8)
 - Lead the subject line with the role/topic context, not just "Following up"
 - "Thanks for the conversation today" not "Thank you for the time today"
