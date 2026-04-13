@@ -124,6 +124,26 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-13 (evening)
+
+### Done
+- 15 outreach touches logged to sheet (Stripe x3, TLA, Avi/Boomi, Spencer Hoffman/BMF, Sefunmi/Helen/Julie/Ali K for Stripe intros, Jonny Stuart/James Courtney for Brex intro, Maxine Samaha/TLA)
+- Phoenix Technologies (Tim Schulz) followed up — status updated in Interviews tab, follow-up Apr 20
+- Spencer Hoffman last name updated in sheet
+- Voice rules updated: no "well deserved", drop filler warmers, casual close when rapport exists
+- New operating rule added: check sheet before asking Hirsch about status
+- Fintech blurb drafted for Ali Vira referral (with Deloitte, HSBC, neobank, Hearth numbers)
+- All outreach logged to Outreach tab with follow-up dates Apr 20
+- Pushed to GitHub
+
+### Pending
+- Ramp HM interview tomorrow Apr 14 11am EST with William Simmons — PREP TONIGHT
+- Venn post-call thank-you + Interviews tab update (call was today 1pm EST)
+- JP Morgan follow-ups (Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia) — due Apr 15
+- LinkedIn profile update (T009) — still to do
+- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR) — not yet messaged
+- Avi message drafted but confirm if sent (logged as sent)
+
 ## Session Log: 2026-04-13 (morning)
 
 ### Done
