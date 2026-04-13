@@ -123,6 +123,28 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-13 (morning)
+
+### Done
+- OAuth re-authed (file-based keyring — no passphrase going forward)
+- All pending tasks pushed to Sheets (T009–T013)
+- T007 merged into T009, marked done
+- T001, T002, T013 marked done (per Hirsch)
+- T004 + T013 merged into one video task
+- T005 marked done (fintech outreach blitz complete)
+- Outreach follow-ups sent: James Chiu (Cedar), Matas (Instacart), Shreya (Chime), Ali Vira (Plaid), Matthew Cavdar (Adyen)
+- New outreach logged: Gabi Foschi (Adyen), Matthew Cavdar (Adyen)
+- Venn meet & greet added to Interviews tab — Ahmed Shafik (co-founder), 1pm EST, Canadian business banking fintech, Series A $21.5M
+- LinkedIn post drafted + edited (Anthropic cost optimization story)
+- Em dash → hyphen noted as voice rule for all outreach messages
+
+### Pending
+- JP Morgan follow-ups (Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia) — due Apr 15
+- Ramp HM interview — Apr 14 11am EST with William Simmons
+- LinkedIn profile update (T009) — still to do
+- Venn post-call thank-you + update Interviews tab after call
+- More Ramp-leveraging outreach to come (Hirsch's strategy, ongoing)
+
 ## Session Log: 2026-04-10 (evening)
 
 ### Done
