@@ -88,7 +88,7 @@ def get_interviews_from_sheet(svc_sheets):
         if len(row) < 5: continue
         company, role, stage, date_str, status = row[0], row[1], row[2], row[3], row[4]
         notes = row[5] if len(row) > 5 else ""
-        if status in ("Completed", "Passed", "Failed", "Thank-you Sent"):
+        if status in ("Complete", "Completed", "Passed", "Failed", "Thank-you Sent"):
             continue
         try:
             idate = datetime.strptime(date_str, "%Y-%m-%d").date()
