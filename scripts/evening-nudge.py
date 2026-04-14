@@ -135,5 +135,15 @@ def main():
     print(msg)
     send_telegram(msg)
 
+    # Log what was sent so context is available if Hirsch replies
+    log_path = os.path.join(WORKSPACE, "logs", "evening-nudge-last.json")
+    os.makedirs(os.path.dirname(log_path), exist_ok=True)
+    with open(log_path, "w") as f:
+        json.dump({
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "pending": pending,
+            "message": msg
+        }, f, indent=2)
+
 if __name__ == "__main__":
     main()
