@@ -56,7 +56,7 @@ Use this when a contact is making an intro on your behalf and needs a blurb to f
 
 ### Blurb
 
-Hirsch is a senior fintech PM with 10 years building AI products from 0→1 to scale, including Deloitte ($13M ARR audit automation), HSBC (AI chatbot saving $15M annually), and a 3-in-1 neobank that reached 50K MAUs within months of launch. Most recently, he's been working with a Series B fintech in NYC, identifying and shipping AI agents to drive revenue in the core financing funnel. Across his product career he's delivered $23M+ in revenue impact and supported $6M in fundraising, with a focus on turning new bets into revenue-generating products.
+Hirsch is a senior fintech PM with 10 years building AI products from 0→1 to scale, including Deloitte ($13M ARR audit automation), HSBC (AI chatbot saving $15M annually), and a 3-in-1 neobank that reached 50K MAUs within months of launch. Most recently, he's been working with a Series B fintech in NYC, identifying and shipping AI agents to drive revenue in the core financing funnel. Across his product & founder career he's delivered $23M+ in revenue impact and supported $6M in fundraising, with a focus on turning new bets into revenue-generating products.
 
 ---
 
