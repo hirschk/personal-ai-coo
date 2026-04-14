@@ -60,6 +60,26 @@ Never cache pipeline state in MEMORY.md. Always load from Sheets when asked.
 
 ---
 
+## Job Search Strategy (updated Apr 14, 2026)
+
+Two tracks — not compromising on both simultaneously:
+
+**Track A: Toronto in-person**
+- Series C+ or big recognized brand (Amex, Deloitte, Shopify, Stripe, Google, etc.)
+- Must be a name that means something — no Series A or under
+- Goal: big office, fun culture, more chill, brand equity on resume
+- Back in Toronto for the summer
+
+**Track B: Remote US role**
+- Live in Toronto, US-paying salary
+- Target: $180–200K USD (already ~30% more than Canadian equivalent)
+- Contract preferred — tax savings on top of currency arbitrage
+- Company location doesn't matter as long as it's fully remote
+
+Rule: if it's in-person → must be big brand. If it's remote → must pay US rates.
+
+---
+
 ## Where to Look Things Up
 
 - **Pipeline / interviews / stages** → Interviews tab
@@ -123,6 +143,47 @@ When running batch outreach from a CSV or list:
 - **Undated tasks are invisible by default** — surface them separately.
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
+
+## Session Log: 2026-04-14
+
+### Done
+- Ramp HM interview completed — William Simmons, went exceptionally well (9/10)
+- Thank-you sent via Anna + Yeno. William's action item: follow up with recruiting
+- Interviews tab updated: Ramp → Complete
+- Fixed interview-followup.py: added "Complete" to skip statuses
+- Fixed evening-nudge.py: added nudge log (logs/evening-nudge-last.json)
+- Intro blurb finalized: "senior fintech PM & founder, 4 months, $23M+ revenue & $6M fundraising"
+- Job search strategy saved: Track A (Toronto in-person, Series C+ or big brand) / Track B (Remote US, $180-200K USD, contract preferred)
+- Arush Agarwal / Modus logged — message sent, awaiting reply
+- Replies from Gabi, Helen, Santosh, Tejas, Spencer, Julie — all marked Replied, follow-up Apr 15
+- Gabi and Helen already forwarding to contacts at Stripe/Adyen
+- voice_rules.md updated with Apr 14 lessons
+
+### Pending (tomorrow Apr 15)
+- Follow up: Gabi, Helen, Santosh, Tejas, Spencer, Julie
+- JP Morgan follow-ups: Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia
+- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
+- Venn post-call thank-you + Interviews tab update
+- LinkedIn profile update (T009)
+- Await Ramp next steps
+
+---
+
+## Session Log: 2026-04-14 (late night)
+
+### Done
+- Fixed `evening-nudge.py`: added `"sent"` to `TERMINAL_STATUS` — was re-asking about already-logged outreach
+- Added nudge log: cron now writes `logs/evening-nudge-last.json` with timestamp + pending list after each fire
+- Both fixes pushed to GitHub
+
+### Pending
+- Ramp HM interview Apr 14 11am EST — William Simmons
+- JP Morgan follow-ups (Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia) — due Apr 15
+- Venn post-call thank-you + Interviews tab update
+- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
+- LinkedIn profile update (T009)
+
+---
 
 ## Session Log: 2026-04-13 (evening)
 

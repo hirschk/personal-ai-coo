@@ -32,6 +32,12 @@ Open to my next role. Head of Product or Senior PM, AI-native companies. NYC, LA
 ## Learned Rules (from edits)
 _(none yet — added automatically when Hirsch pastes edited drafts)_
 
+## Learned Rules (from edits — Apr 14)
+- "felt right" is too soft — use direct positives like "is good!" or "timing is right"
+- Don't say "chat more about" — just "chat about"
+- CTA like "could we find some time tomorrow?" works well — light, direct, specific
+- Ramp interview is live social proof — use it actively in outreach as a signal of momentum
+
 ## Learned Rules (from edits — Apr 13)
 - Drop filler warmers like "Good times" when reconnecting — let the shared context speak for itself
 - Close with something casual like "cheers man" when there's existing rapport — more natural than "Thanks either way"
