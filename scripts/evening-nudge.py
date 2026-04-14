@@ -20,7 +20,7 @@ GOG_TOKEN_FILE   = os.path.join(WORKSPACE, "config/gog-token.json")
 CLIENT_SECRET    = os.path.join(WORKSPACE, "google_client_secret.json")
 MAX_NAMES        = 5
 
-TERMINAL_STATUS = {"replied", "meeting booked", "stale", "passed", "declined"}
+TERMINAL_STATUS = {"sent", "replied", "meeting booked", "stale", "passed", "declined"}
 SKIP_JOB_STATUS = {"removed", "paused", "applied", "screening", "interviewing",
                    "rejected", "passed", "hired", "declined"}
 # "outreaching" intentionally excluded — stays active until referral confirmed
