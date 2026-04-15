@@ -144,6 +144,29 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-15 (evening)
+
+### Done
+- Mercury outreach: Jeremy Montes, Roy Morejon, Jordan Olesen, Sam Haddon — all sent, logged to Outreach tab with follow-up Apr 18
+- voice_rules.md updated: no filler warmers, no em dashes, lowercase "hey", short broken lines, parentheticals for context, tight language ("I'm interviewing" not "I'm currently interviewing")
+- Follow-up timing rule locked: 3 days from send date
+- Fixed: linkedin-content-prompt.py was re-firing on already-posted content — no posted-state tracker existed
+- Built `scripts/state.py` — shared cron state module (zero API calls, reads/writes logs/state.json)
+- Retrofitted 3 crons to use shared state: followup-sequence (once/day), evening-nudge (4h cooldown), linkedin-content-prompt (3-day posted check)
+- All pushed to GitHub
+
+### Pending
+- Venn case study due Apr 17 — not started
+- Ramp next steps — end of week / early next week
+- Follow-ups Apr 17: Pedro Franceschi (Brex), Danny Williams (Wealthsimple)
+- Follow-ups Apr 18: Dec McLaughlin (Stripe), Ali K, Philman/Rippling, Mercury x4
+- JP Morgan: Jason Finkelstein, Monica Rincon, Austin Osborne — overdue
+- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
+- LinkedIn profile update (T009)
+- LinkedIn post (pending)
+
+---
+
 ## Session Log: 2026-04-15
 
 ### Done
