@@ -144,6 +144,38 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-15
+
+### Done
+- Venn moved to Case Study stage — received Apr 14, due Apr 17
+- Dec McLaughlin (Stripe) replied — digging internally for a contact, follow-up Apr 18
+- Eduardo Martinez-Barrera (Adyen recruiter) — outreached via Template 5
+- Philman via Annie Liu (Rippling) — intro request sent, follow-up Apr 18
+- Danny Williams (Wealthsimple) — intro request sent, follow-up Apr 17
+- Pedro Franceschi (Brex CEO) — email sent + LinkedIn comment, follow-up Apr 17
+- Jessica Hansen Vi (Brex recruiter) — connection request sent
+- Matthew Parson (Brex) — passed
+- Santosh Booluck — passed
+- Ali K, CPA — replied, follow-up Apr 18
+- Ramp: Yeno replied — update expected end of week or early next week
+- Template 5 (recruiter cold outreach) added to outreach_templates.md
+- Template 1c (casual AI-angle intro blurb) added to outreach_templates.md
+- voice_rules.md: no em dashes hard rule added
+- Anthropic API partial outage today ~14:53-16:01 UTC (resolved)
+- Strategy locked: sniper not shotgun, 3 companies/day, 3-4 threads each
+
+### Pending
+- Venn case study due Apr 17
+- Ramp next steps — end of week / early next week
+- Follow-ups Apr 17: Pedro Franceschi (Brex), Danny Williams (Wealthsimple)
+- Follow-ups Apr 18: Dec McLaughlin (Stripe), Ali K, Philman/Rippling
+- JP Morgan follow-ups: Jason Finkelstein, Monica Rincon, Austin Osborne (overdue)
+- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
+- LinkedIn profile update (T009)
+- LinkedIn post (pending)
+
+---
+
 ## Session Log: 2026-04-14
 
 ### Done

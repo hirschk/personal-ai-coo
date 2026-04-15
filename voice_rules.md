@@ -32,6 +32,9 @@ Open to my next role. Head of Product or Senior PM, AI-native companies. NYC, LA
 ## Learned Rules (from edits)
 _(none yet — added automatically when Hirsch pastes edited drafts)_
 
+## Learned Rules (from edits — Apr 15)
+- No em dashes anywhere — in drafts, outreach, posts. Hard rule. Looks like AI wrote it.
+
 ## Learned Rules (from edits — Apr 14)
 - "felt right" is too soft — use direct positives like "is good!" or "timing is right"
 - Don't say "chat more about" — just "chat about"

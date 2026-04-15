@@ -68,6 +68,22 @@ Hirsch is a senior fintech PM & founder with 10 years building AI products from 
 
 ---
 
+## Template 1c: Intro Blurb (casual / AI angle)
+
+### Blurb
+
+Hirsch is a fintech PM I know who has built and scaled AI products across Deloitte, HSBC, and a 3-in-1 neobank spanning banking, credit, and insurance.
+
+He focuses on 0→1 work, taking new product ideas and turning them into real revenue. He has also been hands-on building AI agents himself, most recently at a Series B fintech in NYC.
+
+Thought it could be a relevant connection given the AI work you're doing.
+
+### Notes
+
+**When to use:** Casual intro through a mutual, especially when the target company is AI-forward. Softer tone than 1b — feels more like a personal recommendation than a formal blurb.
+
+---
+
 ---
 
 ## Template 2: Warm Outreach (2nd-degree or cold, no direct connection)
@@ -144,6 +160,20 @@ Hirsch
 **Note:** This is the hardest message to send — keep it short and make the ask explicit. You're asking someone to spend social capital on your behalf. Respect their time: one sentence of context, one direct ask, easy out.
 
 ---
+
+---
+
+## Template 5: Recruiter Cold Outreach (you initiating to recruiter)
+
+### Message
+
+Hey [Name] - I'm interviewing at Ramp for Product roles, and exploring other top fintechs. [Company] is top of my list and I'm interested in your [Role]. Could we connect?
+
+### Notes
+- Lead with Ramp interview as social proof
+- Name the specific role you want
+- Keep it under 3 sentences
+- No em dashes
 
 ---
 
