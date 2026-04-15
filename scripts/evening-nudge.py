@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
+sys.path.insert(0, os.path.dirname(__file__))
+from state import fired_within_hours, mark_fired
 
 WORKSPACE        = "/root/.openclaw/workspace"
 TELEGRAM_TOKEN   = "REDACTED"
@@ -77,6 +79,10 @@ def send_telegram(text):
 
 
 def main():
+    if fired_within_hours("evening_nudge", hours=4):
+        print("Already nudged within 4 hours. Skipping.")
+        return
+
     today = datetime.now(timezone.utc).date()
     today_str = today.strftime("%Y-%m-%d")
 
@@ -144,6 +150,7 @@ def main():
             "pending": pending,
             "message": msg
         }, f, indent=2)
+    mark_fired("evening_nudge")
 
 if __name__ == "__main__":
     main()

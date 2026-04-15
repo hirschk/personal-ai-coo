@@ -17,6 +17,8 @@ from datetime import datetime, timezone
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
+sys.path.insert(0, os.path.dirname(__file__))
+from state import fired_today, mark_fired
 
 WORKSPACE        = "/root/.openclaw/workspace"
 TELEGRAM_TOKEN   = "REDACTED"
@@ -288,6 +290,10 @@ def section_tasks(svc, today):
 # ---------------------------------------------------------------------------
 
 def main():
+    if fired_today("morning_brief"):
+        print("[INFO] Morning brief already sent today. Skipping.")
+        return
+
     today     = datetime.now(timezone.utc).date()
     today_str = today.strftime("%Y-%m-%d")
 
@@ -342,6 +348,7 @@ def main():
     message = "\n".join(lines)
     print(message)
     send_telegram(message)
+    mark_fired("morning_brief")
 
 
 if __name__ == "__main__":
