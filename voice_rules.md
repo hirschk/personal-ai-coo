@@ -1,5 +1,5 @@
 # Voice Rules — Sterl Learning Loop
-Last updated: 2026-04-07
+Last updated: 2026-04-15
 
 ## Outreach Rules
 - No filler openers like "Hope you're well" — get straight to the point
@@ -34,6 +34,12 @@ _(none yet — added automatically when Hirsch pastes edited drafts)_
 
 ## Learned Rules (from edits — Apr 15)
 - No em dashes anywhere — in drafts, outreach, posts. Hard rule. Looks like AI wrote it.
+- Open with lowercase "hey" for casual outreach — not "Hey"
+- Break messages into short standalone lines, not flowing paragraphs
+- "I'm interviewing" not "I'm currently interviewing" — cut every filler word
+- Use parentheticals for context: "(ledger automation product)" not a full clause
+- Never open with "Hope you're enjoying your time at X" or any variation — banned
+- 3-day follow-up timing on all outreach, not 7
 
 ## Learned Rules (from edits — Apr 14)
 - "felt right" is too soft — use direct positives like "is good!" or "timing is right"
