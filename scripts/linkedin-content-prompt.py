@@ -10,6 +10,8 @@ import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+sys.path.insert(0, os.path.dirname(__file__))
+from state import posted_within_days
 
 # Config
 TELEGRAM_BOT_TOKEN = "8397276417:AAFelaU6_0xyF3ImUNmQ3TqW1erW4HieOY0"
@@ -17,7 +19,6 @@ TELEGRAM_CHAT_ID = "8768439197"
 WORKSPACE = "/root/.openclaw/workspace"
 MEMORY_DIR = os.path.join(WORKSPACE, "memory")
 LOG_FILE = os.path.join(WORKSPACE, "logs", "linkedin-content.log")
-POSTED_LOG = os.path.join(WORKSPACE, "logs", "linkedin-posted.json")
 
 
 def send_telegram(text):
@@ -74,25 +75,8 @@ def extract_post_worthy_content(memory_text):
     return best
 
 
-def already_posted_recently(days=3):
-    """Return True if a post was logged within the last `days` days."""
-    if not os.path.exists(POSTED_LOG):
-        return False
-    try:
-        with open(POSTED_LOG) as f:
-            data = json.load(f)
-        last = data.get("last_posted")
-        if not last:
-            return False
-        last_date = datetime.strptime(last, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-        return datetime.now(timezone.utc) - last_date < timedelta(days=days)
-    except Exception as e:
-        log(f"[warn] Could not read posted log: {e}")
-        return False
-
-
 def main():
-    if already_posted_recently(days=3):
+    if posted_within_days("linkedin_post", days=3):
         log("Post already made in last 3 days — skipping prompt.")
         return
 
