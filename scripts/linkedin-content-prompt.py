@@ -11,7 +11,7 @@ import json
 import requests
 from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(__file__))
-from state import posted_within_days
+from state import posted_within_days, _load, _save
 
 # Config
 TELEGRAM_BOT_TOKEN = "REDACTED"
@@ -113,6 +113,10 @@ def main():
 
     try:
         send_telegram(message)
+        # Mark prompt sent so we don't re-fire for 3 days
+        data = _load()
+        data["linkedin_post"] = {"last_posted": datetime.now(timezone.utc).isoformat()}
+        _save(data)
         log("Telegram prompt sent successfully.")
     except Exception as e:
         log(f"ERROR sending Telegram message: {e}")
