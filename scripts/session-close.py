@@ -6,24 +6,20 @@ Cron: 0 4 * * * python3 /root/.openclaw/workspace/scripts/session-close.py >> /r
 """
 import json, os, re, subprocess, sys
 from datetime import datetime, timezone
-from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 WORKSPACE   = "/root/.openclaw/workspace"
 SHEET_ID    = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 MEMORY_FILE = os.path.join(WORKSPACE, "MEMORY.md")
 MEMORY_DIR  = os.path.join(WORKSPACE, "memory")
+SA_KEY_FILE = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
+SHEETS_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 def get_creds():
-    with open(os.path.join(WORKSPACE, "config/gog-token.json")) as f: tok = json.load(f)
-    with open(os.path.join(WORKSPACE, "google_client_secret.json")) as f: secret = json.load(f)
-    cfg = secret.get("installed") or secret.get("web") or secret
-    return Credentials(token=None, refresh_token=tok["refresh_token"],
-        token_uri="https://oauth2.googleapis.com/token",
-        client_id=cfg["client_id"], client_secret=cfg["client_secret"],
-        scopes=["https://www.googleapis.com/auth/spreadsheets",
-                "https://www.googleapis.com/auth/gmail.readonly",
-                "https://www.googleapis.com/auth/calendar.readonly"])
+    return service_account.Credentials.from_service_account_file(
+        SA_KEY_FILE, scopes=SHEETS_SCOPES
+    )
 
 def git_commits_today(date_str):
     try:

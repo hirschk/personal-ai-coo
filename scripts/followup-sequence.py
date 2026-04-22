@@ -14,8 +14,7 @@
 
 import json, os, re, sys, urllib.request
 from datetime import datetime, timezone
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 sys.path.insert(0, os.path.dirname(__file__))
 from state import fired_today, mark_fired
@@ -24,8 +23,8 @@ WORKSPACE        = "/root/.openclaw/workspace"
 TELEGRAM_TOKEN   = "REDACTED"
 TELEGRAM_CHAT_ID = "8768439197"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
-GOG_TOKEN_FILE   = os.path.join(WORKSPACE, "config/gog-token.json")
-CLIENT_SECRET    = os.path.join(WORKSPACE, "google_client_secret.json")
+SA_KEY_FILE      = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
+SHEETS_SCOPES    = ["https://www.googleapis.com/auth/spreadsheets"]
 
 MAX_NEW_CONTACTS = 5
 STAGE_ORDER = ["D3", "D7", "D14"]
@@ -41,21 +40,9 @@ ACTIONED_JOB_STATUSES = {
 
 def sheets_client():
     try:
-        with open(GOG_TOKEN_FILE) as f:
-            tok = json.load(f)
-        with open(CLIENT_SECRET) as f:
-            secret = json.load(f)
-        cfg = secret.get("installed") or secret.get("web") or secret
-        creds = Credentials(
-            token=tok.get("token"),
-            refresh_token=tok["refresh_token"],
-            token_uri="https://oauth2.googleapis.com/token",
-            client_id=cfg["client_id"],
-            client_secret=cfg["client_secret"],
-            scopes=["https://www.googleapis.com/auth/spreadsheets"],
+        creds = service_account.Credentials.from_service_account_file(
+            SA_KEY_FILE, scopes=SHEETS_SCOPES
         )
-        if creds.expired or not creds.valid:
-            creds.refresh(Request())
         return build("sheets", "v4", credentials=creds).spreadsheets()
     except Exception as e:
         print("[ERROR] Sheets auth: " + str(e), file=sys.stderr)
