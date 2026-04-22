@@ -121,40 +121,32 @@ def send_telegram(text):
 # ---------------------------------------------------------------------------
 
 def section_followups(svc, today, today_str):
+    # Columns: A=Date, B=Name, C=Company, D=Channel, E=Message Type, F=Status, G=Follow-Up Date, H=Notes
     rows = get_range(svc, "Outreach!A2:H200")
     due = []
     for i, row in enumerate(rows):
         row = pad(row, 8)
-        status  = row[5].strip().lower()
-        raw_stg = row[6].strip()
-        d_str   = row[0].strip()
-        name    = row[1].strip()
-        company = row[2].strip()
-        channel = row[3].strip()
+        name       = row[1].strip()
+        company    = row[2].strip()
+        channel    = row[3].strip()
+        status     = row[5].strip().lower()
+        fu_str     = row[6].strip()
 
+        if not name:
+            continue
         if status in TERMINAL_STATUS:
             continue
-
-        stage = normalize_stage(raw_stg)
-        if stage.lower() in {"done", ""} or stage not in STAGE_ORDER:
-            continue
-
-        if not d_str:
+        if not fu_str:
             continue
 
         try:
-            last_touch = datetime.strptime(d_str, "%Y-%m-%d").date()
+            fu_date = datetime.strptime(fu_str, "%Y-%m-%d").date()
         except ValueError:
             continue
 
-        days_since = (today - last_touch).days
-        required   = STAGE_DAYS[stage]
-
-        if days_since >= required:
+        if today >= fu_date:
             label = name + " @ " + company if company else name
-            due.append({"label": label, "stage": stage, "channel": channel})
-            # advance stage; sheet row = i+2 (header is row 1, data starts row 2)
-            update_outreach_row(svc, i + 2, today_str, next_stage(stage))
+            due.append({"label": label, "channel": channel})
 
     return due
 
@@ -309,7 +301,8 @@ def main():
     if followups:
         lines.append("<b>1. Follow-ups due (" + str(len(followups)) + ")</b>")
         for item in followups:
-            lines.append("  • [" + item["stage"] + "] " + item["label"] + " via " + item["channel"])
+            suffix = " via " + item["channel"] if item["channel"] else ""
+            lines.append("  • " + item["label"] + suffix)
         lines.append("")
 
     # Section 2 — New contacts (top 5, carry-forward included)
