@@ -144,6 +144,32 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-22
+
+### Done
+- Google OAuth expired (again) — fixed permanently: all Sheets scripts switched to service account auth (`sterl-sheets@studious-saga-412409.iam.gserviceaccount.com`)
+- Gmail/Calendar still on OAuth — skipped for now, not critical
+- Morning brief fixed: section 1 was broken (looking for D3/D7/D14 stage codes instead of Follow-Up Date column) — rewritten, pushed to GitHub
+- Full outreach sheet cleanup: ~36 rows reviewed and updated
+- Passed: Matas, Philman/Rippling, Sefunmi, Santosh, Jonny Stuart, James Courtney, Alia Kaussar, Andy Woods
+- Stale: Jason Finkelstein, Monica Rincon, Austin Osborne (JPM — no reply)
+- Followed up: James Chiu, Ali Vira, Shreya, Jaime Lopez, Cade, Dec McLaughlin, Danny Williams, Maxine Samaha, Mercury x4, Pedro Franceschi — all due Apr 25
+- Vino x2 (Holt Renfrew + Canada Goose) — follow-up Apr 23
+- Tejas Savalia submitted JPM referral — Jobs tab updated to "applied"
+- Recruiter blitz: ~40 LinkedIn DMs sent using fintech blurb (Senior/Staff PM or HoP, Series B+ fintech)
+- Recruiter blurb finalized and saved to voice_rules.md
+- LinkedIn post voice rules updated (Apr 21 edits from posted content)
+- All changes pushed to GitHub
+
+### Pending
+- Vino check-in tomorrow Apr 23 (Holt Renfrew + Canada Goose + Rachel Zimmerman/Wealthsimple)
+- Follow-ups Apr 25: full active list (Mercury x4, Stripe x3, Ali Vira, Shreya, Danny, Dec, Pedro, James Chiu, Maxine, recruiter blitz)
+- VC Talent Partners outreach (5 DMs, Austin/LA) — overdue since Apr 15
+- Austin HM DMs (10, Visa/Circle/Pismo) — overdue since Apr 16
+- LinkedIn profile inbounds check — overdue since Apr 17
+- LinkedIn profile update (T009) — still pending
+- Video: How I built my OpenClaw agent — no date
+
 ## Session Log: 2026-04-15 (evening)
 
 ### Done
