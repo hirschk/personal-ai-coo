@@ -29,7 +29,7 @@ SHEETS_SCOPES    = ["https://www.googleapis.com/auth/spreadsheets"]
 MAX_NEW_CONTACTS = 5
 STAGE_ORDER = ["D3", "D7", "D14"]
 STAGE_DAYS  = {"D3": 3, "D7": 7, "D14": 14}
-TERMINAL_STATUS       = {"replied", "meeting booked", "stale"}
+TERMINAL_STATUS       = {"replied", "meeting booked", "stale", "passed", "closed", "referred"}
 SKIP_JOB_STATUSES     = {"removed", "paused"}
 ACTIONED_JOB_STATUSES = {
     "applied", "screening", "interviewing", "paused",
