@@ -57,3 +57,4 @@ job_brief.py
 job_discovery.py
 .openclaw/
 .clawhub/
+config/sterl-sheets-key.json

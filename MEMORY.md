@@ -55,7 +55,8 @@ Never cache pipeline state in MEMORY.md. Always load from Sheets when asked.
 - **Prompt caching:** ON (`cacheRetention: long`)
 - **maxTokens:** 1500
 - **Heartbeats:** OFF
-- **Google OAuth:** Sheets (write) + Gmail (readonly) + Calendar (readonly)
+- **Google OAuth:** Gmail (readonly) + Calendar (readonly) — gog CLI only for Gmail/Calendar
+- **Sheets:** Service account ONLY — `config/sterl-sheets-key.json`. Never use `gog sheets` commands. gog OAuth is expired and not maintained.
 - **Apify token:** in `/root/.openclaw/workspace/.env` and `/etc/environment`
 
 ---
@@ -144,6 +145,31 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-27
+
+### Done
+- Fixed morning brief: "Passed", "Closed", "Referred" added to terminal statuses — no more surfacing contacts Hirsch closed out
+- Removed Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) from Jobs sheet and memory
+- Logged Razib Ahmed intros: Relay + Float — messages sent, follow-up May 4 (Outreach)
+- Victor Skrylev logged to Outreach — well connected, intro to Ahmed (Venn), asked about other product roles, follow-up May 4
+- Andrew Tulloch: sent email with updated resume (client names added to Focused Bets) + 3 forwardable blurbs for Levr.ai, HiloLabs, Esusu — logged to Outreach, follow-up May 4
+- Recruiter blitz follow-up (~30 LI DMs): "still open to the right fintech role if anything moved" — logged, follow-up May 4
+- Hannah + Lindsay (email follow-ups with resume) — logged, follow-up May 4
+- Tasks marked done: LinkedIn inbounds check, Rachel Zimmerman Wealthsimple reminder
+- LinkedIn post published: 3,247 CS transcripts / $2.2M ARR / bot shipped within a week — state.json updated
+- Seleena Juma logged: sent resume + synopsis, she'll share with Wealthsimple + Accenture FS contacts, follow-up Apr 29
+- Voice rules updated: forwardable blurb format from Razib message — pushed to GitHub
+
+### Pending
+- Seleena Juma follow-up Apr 29 (check if she's shared resume)
+- Andrew Tulloch follow-up May 4
+- Victor Skrylev follow-up May 4
+- Razib Ahmed follow-up May 4
+- Recruiter blitz follow-up May 4
+- VC Talent Partner DMs (5, Austin/LA) — overdue since Apr 15, still pending
+- Austin HM DMs (10, Visa/Circle/Pismo) — overdue since Apr 16, still pending
+- Video: How I built my OpenClaw agent — no date
+
 ## Session Log: 2026-04-22
 
 ### Done
@@ -187,7 +213,6 @@ When running batch outreach from a CSV or list:
 - Follow-ups Apr 17: Pedro Franceschi (Brex), Danny Williams (Wealthsimple)
 - Follow-ups Apr 18: Dec McLaughlin (Stripe), Ali K, Philman/Rippling, Mercury x4
 - JP Morgan: Jason Finkelstein, Monica Rincon, Austin Osborne — overdue
-- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
 - LinkedIn profile update (T009)
 - LinkedIn post (pending)
 
@@ -219,7 +244,6 @@ When running batch outreach from a CSV or list:
 - Follow-ups Apr 17: Pedro Franceschi (Brex), Danny Williams (Wealthsimple)
 - Follow-ups Apr 18: Dec McLaughlin (Stripe), Ali K, Philman/Rippling
 - JP Morgan follow-ups: Jason Finkelstein, Monica Rincon, Austin Osborne (overdue)
-- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
 - LinkedIn profile update (T009)
 - LinkedIn post (pending)
 
@@ -243,7 +267,6 @@ When running batch outreach from a CSV or list:
 ### Pending (tomorrow Apr 15)
 - Follow up: Gabi, Helen, Santosh, Tejas, Spencer, Julie
 - JP Morgan follow-ups: Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia
-- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
 - Venn post-call thank-you + Interviews tab update
 - LinkedIn profile update (T009)
 - Await Ramp next steps
@@ -261,7 +284,6 @@ When running batch outreach from a CSV or list:
 - Ramp HM interview Apr 14 11am EST — William Simmons
 - JP Morgan follow-ups (Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia) — due Apr 15
 - Venn post-call thank-you + Interviews tab update
-- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR), Bharath Raj N (Google DeepMind), Saurabh Mishra (Amazon) — not yet messaged
 - LinkedIn profile update (T009)
 
 ---
@@ -283,7 +305,6 @@ When running batch outreach from a CSV or list:
 - Venn post-call thank-you + Interviews tab update (call was today 1pm EST)
 - JP Morgan follow-ups (Jason Finkelstein, Monica Rincon, Austin Osborne, Tejas Savalia) — due Apr 15
 - LinkedIn profile update (T009) — still to do
-- Thomas Mann (Meta), Yufu Li (Taco Bell), Javin Chouhan (CLEAR) — not yet messaged
 - Avi message drafted but confirm if sent (logged as sent)
 
 ## Session Log: 2026-04-13 (morning)
