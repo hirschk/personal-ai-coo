@@ -104,6 +104,15 @@ _(none yet — added automatically when Hirsch pastes edited drafts)_
 - Sign-off is still "Thanks, Hirsch" at the bottom so Michael knows who to reply to
 - Subject: "Fwd intro [First] <> [First]" — not a formal subject line
 
+## Learned Rules — Outreach/DMs (from edits — Apr 27)
+- Open with a specific reference to recent context ("Good chatting with you Friday") not a generic "taking you up on"
+- Forwardable blurb format: "[Title] for you: [Name], most recently at [Company] ([specific descriptor e.g. Series B BNPL Fintech]) [active work e.g. shipping agentic AI]. Exploring [roles/location]. Could I connect you two?"
+- Use specific fintech descriptor, not just "Series B fintech" (e.g. "BNPL Fintech", "neobank", "payments")
+- "shipping agentic AI" beats passive positioning — show what they were doing
+- Include location in the forwardable blurb when relevant ("Exploring Product roles in Toronto")
+- End the forwardable with "Could I connect you two?" so the referrer can paste and send
+- Send a separate message per company when asking for multiple intros
+
 ## Learned Rules — Emails (from edits — Apr 8)
 - Lead the subject line with the role/topic context, not just "Following up"
 - "Thanks for the conversation today" not "Thank you for the time today"
