@@ -163,6 +163,28 @@ Hirsch
 
 ---
 
+## Template 6: Cold DM (exploring PM role, company on radar)
+
+### Message
+
+Hey [Name], connected because I'm exploring my next PM role and [Company] is on my radar.
+Senior AI PM background — Deloitte Ventures, co-founded an Entrepreneur First-incubated AI startup, Series B fintech most recently. Looking for Head of Product or Senior IC at Series B+ fintech.
+Open to a quick chat if relevant, no worries if not.
+
+### Notes
+
+**When to use:** Cold DM to someone at a target company — not necessarily a hiring manager or recruiter. Short, no fluff, gives enough context for them to know if it's worth a reply.
+
+**What to customize:**
+- `[Name]` — first name
+- `[Company]` — company name
+
+**Voice check:** Three sentences. No opener filler. Ends with a soft close (no pressure).
+
+---
+
+---
+
 ## Template 5: Recruiter Cold Outreach (you initiating to recruiter)
 
 ### Message
