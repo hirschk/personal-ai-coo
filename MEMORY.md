@@ -145,6 +145,36 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-29
+
+### Done
+- 11 outreach contacts marked Passed: James Chiu, Ali Vira, Shreya, Jaime, Cade, Dec, Maxine, Jeremy, Roy, Jordan, Sam
+- Pedro Franceschi (Brex CEO) — Email 3 sent, CFO office workflow angle, follow-up May 2
+- Danny Williams (Wealthsimple) — Referred (shared with TA team)
+- JPM rejection: Area Director Blueprint role, no first round despite Tejas referral. Closed across Jobs tab + all outreach (Tejas, Jason, Monica, Austin Osborne)
+- Razib Ahmed + Andrew Tulloch tasks marked done
+- New outreach logged: Derek (Demand Inc), Doug (EBM AI), Neeraj (Deloitte Ventures) — network ask, AI builder PM, follow-up May 2
+- George (MeetAlfred, Melbourne) — WhatsApp task added, casual warm message drafted
+- Austin recruiters: 40 compiled, saved to `data/austin_recruiters.csv`. T011 updated in Tasks tab.
+  - Priority contacts: Somer Hackley (exec recruiter, VP/Product), Vicente Cuadra (TEKsystems), Allen Kadilis (boutique founder), Charl Botha (Randstad)
+  - DM template pending
+- Seleena Juma follow-up due today — check if she shared resume with Wealthsimple + Accenture FS
+
+### Pending
+- DM template for Austin recruiters — send to priority 4 first (Somer, Vicente, Allen, Charl), then blast remaining 36
+- George (MeetAlfred) WhatsApp — due today
+- Seleena Juma follow-up (due today)
+- VC Talent Partner DMs (5, Austin/LA) — T010, still todo
+- Andrew Tulloch follow-up May 4
+- Victor Skrylev follow-up May 4
+- Razib Ahmed follow-up May 4
+- Recruiter blitz follow-up May 4
+- Derek / Doug / Neeraj follow-up May 2
+- Pedro Franceschi follow-up May 2
+- Video: How I built my OpenClaw agent — no date
+
+---
+
 ## Session Log: 2026-04-27
 
 ### Done
