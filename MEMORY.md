@@ -145,6 +145,25 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-04-30
+
+### Done
+- Telegram token rotated (bot was hijacked — name changed to "ШЕРЛОК")
+- New token added to `.env` as `TELEGRAM_TOKEN`
+- All 12 scripts: hardcoded token replaced with `os.environ.get("TELEGRAM_TOKEN")` + `python-dotenv`
+- All 12 scripts: hardcoded `TELEGRAM_CHAT_ID` replaced with `os.environ.get("TELEGRAM_CHAT_ID")`
+- `TELEGRAM_CHAT_ID=8768439197` added to `.env`
+- `scrape-and-score.py` + `job-discovery.py`: APIFY placeholder removed, uses env var
+- `rebuild-tracker.py`, `fix-jobs-sheet.py`, `load-csv-to-jobs.py`, `gmail-reply-check.py` (Sheets client): switched from OAuth to service account
+- Old token purged from entire git history via `git filter-repo`, force-pushed
+- RUNBOOK.md: added failure mode #7 (Telegram token scraped)
+- All changes pushed to GitHub
+
+### Pending
+- Same as Apr 29 pending — nothing new added
+
+---
+
 ## Session Log: 2026-04-29
 
 ### Done
