@@ -18,9 +18,11 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 sys.path.insert(0, os.path.dirname(__file__))
 from state import fired_today, mark_fired
+from dotenv import load_dotenv
 
 WORKSPACE        = "/root/.openclaw/workspace"
-TELEGRAM_TOKEN   = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = "8768439197"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 SA_KEY_FILE      = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")

@@ -22,7 +22,8 @@ from googleapiclient.discovery import build
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
 APIFY_TOKEN = os.environ.get("APIFY_API_TOKEN", "")
-TELEGRAM_TOKEN   = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = "8768439197"
 WORKSPACE        = "/root/.openclaw/workspace"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"

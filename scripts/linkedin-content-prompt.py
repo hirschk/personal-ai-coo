@@ -12,9 +12,11 @@ import requests
 from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(__file__))
 from state import posted_within_days, _load, _save
+from dotenv import load_dotenv
 
 # Config
-TELEGRAM_BOT_TOKEN = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = "8768439197"
 WORKSPACE = "/root/.openclaw/workspace"
 MEMORY_DIR = os.path.join(WORKSPACE, "memory")

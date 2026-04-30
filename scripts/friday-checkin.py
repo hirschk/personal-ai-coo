@@ -13,11 +13,13 @@ import datetime
 import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from dotenv import load_dotenv
 
 WORKSPACE = "/root/.openclaw/workspace"
 SHEET_ID = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 LOG_FILE = os.path.join(WORKSPACE, "logs/friday-checkin.log")
-TELEGRAM_BOT = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_BOT = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT = "8768439197"
 
 TAB_JOBS = "Jobs"

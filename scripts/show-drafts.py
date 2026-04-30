@@ -16,9 +16,11 @@ import sys
 import urllib.request
 from collections import defaultdict
 from datetime import datetime
+from dotenv import load_dotenv
 
 WORKSPACE        = "/root/.openclaw/workspace"
-TELEGRAM_TOKEN   = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = "8768439197"
 
 YEARS_EXP = "10"

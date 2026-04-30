@@ -15,9 +15,11 @@ import requests
 from datetime import datetime, timezone
 
 import anthropic
+from dotenv import load_dotenv
 
 # Config
-TELEGRAM_BOT_TOKEN = "REDACTED"
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = "8768439197"
 WORKSPACE = "/root/.openclaw/workspace"
 DRAFTS_LOG = os.path.join(WORKSPACE, "logs", "linkedin-drafts.log")
