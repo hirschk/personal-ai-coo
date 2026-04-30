@@ -4,26 +4,17 @@ Parse the broken Jobs sheet data and rewrite it cleanly.
 Data pattern: pairs of rows per job, duplicated 5x — dedupe and fix columns.
 """
 
-import json
-import re
-from google.oauth2.credentials import Credentials
+import json, os, re
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 SHEET_ID = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
+WORKSPACE = "/root/.openclaw/workspace"
+SA_KEY_FILE = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
+SHEETS_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
-with open("/tmp/gog-token.json") as f:
-    tok = json.load(f)
-with open("/root/.openclaw/workspace/google_client_secret.json") as f:
-    secret = json.load(f)
-client_config = secret.get("installed") or secret.get("web") or secret
-
-creds = Credentials(
-    token=None,
-    refresh_token=tok["refresh_token"],
-    token_uri="https://oauth2.googleapis.com/token",
-    client_id=client_config["client_id"],
-    client_secret=client_config["client_secret"],
-    scopes=["https://www.googleapis.com/auth/spreadsheets"],
+creds = service_account.Credentials.from_service_account_file(
+    SA_KEY_FILE, scopes=SHEETS_SCOPES
 )
 svc = build("sheets", "v4", credentials=creds)
 sheets = svc.spreadsheets()

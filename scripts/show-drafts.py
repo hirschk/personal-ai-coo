@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 WORKSPACE        = "/root/.openclaw/workspace"
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = "8768439197"
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 YEARS_EXP = "10"
 

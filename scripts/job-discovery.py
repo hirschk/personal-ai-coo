@@ -17,7 +17,7 @@ from collections import defaultdict
 import difflib
 
 # Configuration
-APIFY_API_TOKEN = os.getenv("APIFY_API_TOKEN", "YOUR_APIFY_TOKEN_HERE")
+APIFY_API_TOKEN = os.environ.get("APIFY_API_TOKEN")
 APIFY_ACTOR = "openclaw/linkedin-jobs-scraper"
 WORKSPACE = "/root/.openclaw/workspace"
 

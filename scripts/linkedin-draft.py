@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 # Config
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = "8768439197"
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 WORKSPACE = "/root/.openclaw/workspace"
 DRAFTS_LOG = os.path.join(WORKSPACE, "logs", "linkedin-drafts.log")
 

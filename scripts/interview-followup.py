@@ -22,7 +22,7 @@ SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 WORKSPACE        = "/root/.openclaw/workspace"
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = "8768439197"
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 THANKYOU_LOG     = os.path.join(WORKSPACE, "logs/thankyou-sent.json")
 SA_KEY_FILE      = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
 SHEETS_SCOPES    = ["https://www.googleapis.com/auth/spreadsheets"]

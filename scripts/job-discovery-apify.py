@@ -24,7 +24,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 APIFY_TOKEN = os.environ.get("APIFY_API_TOKEN", "")
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = "8768439197"
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 WORKSPACE        = "/root/.openclaw/workspace"
 SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 SA_KEY_FILE      = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")

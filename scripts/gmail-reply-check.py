@@ -19,6 +19,7 @@ import urllib.request
 from datetime import datetime, timezone, timedelta
 
 from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
 
@@ -29,7 +30,7 @@ SHEET_ID         = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 SHEET_RANGE      = "Outreach!A2:H100"
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = "8768439197"
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 # Outreach sheet columns (0-indexed):
 # 0=Date, 1=Name, 2=Company, 3=Channel, 4=Type, 5=Status, 6=FollowUp, 7=Notes
@@ -167,7 +168,10 @@ def gmail_client():
 
 
 def sheets_client():
-    creds = get_credentials(["https://www.googleapis.com/auth/spreadsheets"])
+    SA_KEY_FILE = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
+    creds = service_account.Credentials.from_service_account_file(
+        SA_KEY_FILE, scopes=["https://www.googleapis.com/auth/spreadsheets"]
+    )
     return build("sheets", "v4", credentials=creds).spreadsheets()
 
 

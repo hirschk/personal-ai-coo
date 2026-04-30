@@ -22,7 +22,7 @@ PENDING_FILE = os.path.join(WORKSPACE, "ideas-pending.json")
 LOG_FILE = os.path.join(WORKSPACE, "logs/ideas.log")
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_BOT = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT = "8768439197"
+TELEGRAM_CHAT = os.environ.get("TELEGRAM_CHAT_ID")
 
 HEADERS = ["Idea", "Status", "First Step", "Due Date", "Last Update", "Notes"]
 

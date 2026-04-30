@@ -2,13 +2,16 @@
 """Quick scrape + score + sheet update"""
 
 import json
+import os
 import urllib.request
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 import time
 from datetime import datetime
 from collections import defaultdict
 import difflib
 
-APIFY_TOKEN = "YOUR_APIFY_TOKEN_HERE"
+APIFY_TOKEN = os.environ.get("APIFY_API_TOKEN")
 ACTOR = "openclaw~linkedin-jobs-scraper"
 WORKSPACE = "/root/.openclaw/workspace"
 SHEET_ID = "1hbT8236Mh9_H4Ri6lTlwuCNvT1jdXTIBR91A3roNFXs"

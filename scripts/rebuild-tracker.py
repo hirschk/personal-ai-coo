@@ -4,31 +4,19 @@ Rebuild Sterl OS Tracker — clean, professional, fully functional
 Sheet ID: 1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co
 """
 
-import json
-from google.oauth2.credentials import Credentials
+import json, os
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 SHEET_ID = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
-TOKEN_FILE = "/tmp/gog-token.json"
+WORKSPACE = "/root/.openclaw/workspace"
+SA_KEY_FILE = os.path.join(WORKSPACE, "config/sterl-sheets-key.json")
+SHEETS_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 
-with open(TOKEN_FILE) as f:
-    tok = json.load(f)
-
-# gog exports only refresh_token — get client_id/secret from google_client_secret.json
-with open("/root/.openclaw/workspace/google_client_secret.json") as f:
-    secret = json.load(f)
-
-client_config = secret.get("installed") or secret.get("web") or secret
-
-creds = Credentials(
-    token=None,
-    refresh_token=tok["refresh_token"],
-    token_uri="https://oauth2.googleapis.com/token",
-    client_id=client_config["client_id"],
-    client_secret=client_config["client_secret"],
-    scopes=tok["scopes"],
+creds = service_account.Credentials.from_service_account_file(
+    SA_KEY_FILE, scopes=SHEETS_SCOPES
 )
 svc = build("sheets", "v4", credentials=creds)
 sheets = svc.spreadsheets()

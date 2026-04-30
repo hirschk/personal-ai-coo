@@ -21,7 +21,7 @@ PENDING_FILE = os.path.join(WORKSPACE, "ideas-pending.json")
 LOG_FILE = os.path.join(WORKSPACE, "logs/ideas.log")
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_BOT = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT = "8768439197"
+TELEGRAM_CHAT = os.environ.get("TELEGRAM_CHAT_ID")
 CLAUDE_MODEL = "claude-haiku-3-5-20241022"
 
 SYSTEM_PROMPT = """You are helping structure a personal idea for a senior AI product manager who is job searching and building his personal brand.

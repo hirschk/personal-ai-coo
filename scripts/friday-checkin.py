@@ -20,7 +20,7 @@ SHEET_ID = "1o6XXLhpxFVZL5SlDKP8a56Y17brgmD7HWzAGe1Ei4Co"
 LOG_FILE = os.path.join(WORKSPACE, "logs/friday-checkin.log")
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 TELEGRAM_BOT = os.environ.get("TELEGRAM_TOKEN")
-TELEGRAM_CHAT = "8768439197"
+TELEGRAM_CHAT = os.environ.get("TELEGRAM_CHAT_ID")
 
 TAB_JOBS = "Jobs"
 TAB_OUTREACH = "Outreach"
