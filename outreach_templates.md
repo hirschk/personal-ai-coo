@@ -163,6 +163,31 @@ Hirsch
 
 ---
 
+## Template 7: Recruiter — LinkedIn Connect + Follow-On (2-step)
+
+**Step 1: Connection request**
+
+> Hi [Name] - Senior AI PM relocating to Austin, targeting Series B+ fintech. Wanted to connect with recruiters who know that market.
+
+**Step 2: After they accept**
+
+> Thanks for connecting [Name].
+> Senior AI PM - Deloitte Ventures, cofounded an Entrepreneur First-incubated AI startup, Series B fintech most recently. 10 years, $23M revenue impact.
+> Targeting Group PM or Senior IC at Series B+ fintech or AI-native companies in Austin or remote US.
+> Worth a 20 minute call?
+
+### Notes
+
+**When to use:** Cold outreach to Austin-market recruiters via LinkedIn.
+
+**Logic:** Connect request = who you are + why you're reaching out. Follow-on = full pitch + ask. Don't pitch in the connect request.
+
+**Voice check:** No filler. No "I came across your profile." Recruiter's first question is "can I place this person" — answer it immediately.
+
+---
+
+---
+
 ## Template 6: Cold DM (exploring PM role, company on radar)
 
 ### Message
