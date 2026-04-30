@@ -91,7 +91,23 @@ crontab -e
 
 ---
 
-## 7. Dual Instance / Double Billing
+## 7. Telegram Token Scraped
+
+**Symptom:** Bot name/photo changes unexpectedly. Someone else controls your bot.
+
+**Cause:** Hardcoded token committed to a public GitHub repo — scraped by bots.
+
+**Fix:**
+1. Rotate immediately via BotFather → `/mybots` → select bot → API Token → Revoke
+2. Update `/root/.openclaw/workspace/.env` with new `TELEGRAM_TOKEN=...`
+3. Confirm no hardcoded tokens remain: `grep -rn "AAA\|bot_token" scripts/ --include="*.py"`
+4. If token was in git history: `git filter-repo --replace-text <(echo "OLD_TOKEN==>REDACTED") --force && git push --force`
+
+**Prevention:** All secrets live in `.env` only. `.env` is gitignored. Scripts use `os.environ.get()` + `python-dotenv`. Never hardcode tokens in scripts.
+
+---
+
+## 8. Dual Instance / Double Billing
 
 **Symptom:** API costs spike unexpectedly. Two OpenClaw instances running simultaneously (e.g. Mac + VPS).
 
