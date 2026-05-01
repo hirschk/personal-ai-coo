@@ -104,7 +104,16 @@ _(none yet — added automatically when Hirsch pastes edited drafts)_
 - Sign-off is still "Thanks, Hirsch" at the bottom so Michael knows who to reply to
 - Subject: "Fwd intro [First] <> [First]" — not a formal subject line
 
-## Learned Rules — Outreach/DMs (from edits — Apr 27)
+## Learned Rules — LinkedIn Posts (from edits — May 1)
+- Kill the fear first — if the incident sounds bad, address the obvious concern ("No PII exposed") before readers stop reading
+- Ground the tool in one line upfront: "Personal bot built on OpenClaw, running on Telegram" — context before story
+- Add levity with translation/emoji for foreign words: "(translation → 'Sherlock' 😂)" — humanizes, lowers alarm
+- Prose over bullets for personal incident narratives — lists feel clinical; sentences feel lived-in
+- Reframe failure as fast recovery: "fixed in 5 minutes" beats "two hours of incident response" — downplay the pain, show the agency
+- Name the PM learning angle explicitly: "I'm a PM learning to build with AI" — this IS the hook for his audience; don't bury
+- "Battle scar" framing: reframe failure as a feature of personal projects, not a cautionary tale — "exactly the kind of battle scar I want" lands better than incident drama
+- Warm community close beats question CTA on personal/learning posts: "Have fun building, but with care" — doesn't demand engagement, feels generous not transactional
+- Drop the job search footer on posts that have a strong personal/community angle — it breaks the tone
 - Open with a specific reference to recent context ("Good chatting with you Friday") not a generic "taking you up on"
 - Forwardable blurb format: "[Title] for you: [Name], most recently at [Company] ([specific descriptor e.g. Series B BNPL Fintech]) [active work e.g. shipping agentic AI]. Exploring [roles/location]. Could I connect you two?"
 - Use specific fintech descriptor, not just "Series B fintech" (e.g. "BNPL Fintech", "neobank", "payments")
