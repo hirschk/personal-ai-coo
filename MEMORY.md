@@ -145,6 +145,26 @@ When running batch outreach from a CSV or list:
 - **Section numbering** — render dynamically so numbering is always sequential.
 - **Two nudges daily** — 12:30pm and 9:45pm EST (17:30 and 02:45 UTC).
 
+## Session Log: 2026-05-01
+
+### Done
+- LinkedIn post published: Telegram bot hijack story ("My AI agent got hijacked") — strong personal/PM-learning angle
+- 9 new LinkedIn voice rules saved to voice_rules.md (kill fear first, prose > bullets for incidents, battle scar reframe, warm community close, etc.)
+- Brian Jorgenson (CPO, Wolters Kluwer) — asked for resume on LinkedIn — T015 added, logged to Outreach, follow-up May 4, brianj.jorgenson@wolterskluwer.com
+- All changes pushed to GitHub
+
+### Pending
+- Brian Jorgenson — send resume (T015), follow-up May 4
+- Austin recruiter blast — 40 contacts ready, priority 4 first (Somer, Vicente, Allen, Charl)
+- Follow-ups May 2: Derek (Demand Inc), Doug (EBM AI), Neeraj (Deloitte Ventures), Pedro (Brex)
+- Follow-ups May 4: Tulloch, Skrylev, Razib, recruiter blitz
+- VC Talent Partner DMs (5, Austin/LA) — overdue since Apr 15
+- Seleena Juma — confirm she shared resume with Wealthsimple + Accenture FS
+- LinkedIn profile update (T009) — 3+ weeks in queue
+- Austin HM DMs (Visa/Circle/Pismo) — overdue Apr 16
+
+---
+
 ## Session Log: 2026-04-30
 
 ### Done
