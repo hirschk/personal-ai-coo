@@ -1,0 +1,19 @@
+{
+  "sex": "male",
+  "age": 34,
+  "height_cm": 177,
+  "start_weight_lb": 150.0,
+  "current_weight_lb": 150.0,
+  "goal": "body_recomposition",
+  "calorie_hypothesis": 1900,
+  "calorie_hypothesis_rationale": "Initial estimate. Will be refined weekly based on weight trend, activity, and gym performance.",
+  "calorie_hypothesis_updated": "2026-07-28",
+  "calorie_hypothesis_history": [],
+  "macro_targets": {
+    "protein_g": 150,
+    "carbs_g": 160,
+    "fat_g": 50
+  },
+  "weight_log": [],
+  "gym_performance_log": []
+}

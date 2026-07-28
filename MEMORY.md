@@ -1,6 +1,6 @@
 # MEMORY.md — Sterl Long-Term Memory
 
-Last updated: 2026-04-10
+Last updated: 2026-07-28
 
 ---
 
@@ -61,7 +61,40 @@ Never cache pipeline state in MEMORY.md. Always load from Sheets when asked.
 
 ---
 
-## Job Search Strategy (updated Apr 14, 2026)
+## Hirsch's Economic Reality (added May 15, 2026)
+
+**Current corp-to-corp structure:**
+- $15K USD/month
+- ~$246.6K CAD gross/year
+- ~$222K CAD retained after ~10% corp tax
+- ~$18.5K CAD/month after tax
+
+**Equivalent salaried comp:**
+- ~$385K CAD Toronto employee salary
+- ~$250K USD NYC W2 salary
+
+**Economic comparison group:** top enterprise SaaS AEs, IB VPs, senior Bay Street lawyers, elite big-tech PMs, upper-tier RE private equity.
+
+**Historical precedent:** ~$400K CAD-equivalent at age 30 doing freelance 0→1 MVP/product work for top SF startups.
+
+**Core realization:** This is not a one-time lucky spike. Hirsch has repeatedly demonstrated the ability to identify opportunities and generate elite-level income through unconventional, self-authored paths — not traditional prestige ladders.
+
+---
+
+## Current Status (updated May 13, 2026)
+
+**Job search is over.** Signed with Yucca Health (Brand Merchants Network) on May 12, 2026.
+- Role: AI Product Manager (1099 contractor)
+- Start: May 20, 2026
+- Comp: $11,500/month USD (~$138K gross, ~$200K W2 equivalent)
+- Duration: 3-month contract, path to permanent
+- 3 processes still live in parallel: Casper Studios, Hopper, Remitian (Solon's co, seed, AI for taxes)
+
+**New operating mode:** Ideas, task follow-up, LinkedIn content, reminders. No more job surfacing.
+
+---
+
+## Job Search Strategy (archived Apr 14, 2026)
 
 Two tracks — not compromising on both simultaneously:
 
@@ -476,6 +509,41 @@ When running batch outreach from a CSV or list:
 - **OAuth token expired** — needs `gog auth add` re-auth before anything sheet-related works
 - **Follow-up dates** — move James Chiu, Matas, Ali Vira, Shreya, Alia all to Mon Apr 13 in Outreach tab (pushed from this Friday)
 - **Outreach blitz** — 25 messages next week, fintech focus, Ramp interview as social proof angle. Connection-based first, cold second.
+
+---
+
+## Nutrition Coach (added 2026-07-28)
+
+**Active.** Hirsch is using Sterl as a nutrition coach for body recomposition.
+
+- State: `/root/.openclaw/workspace/nutrition/state.py` — pure data layer
+- Profile: `/root/.openclaw/workspace/nutrition/profile.json`
+- Daily logs: `/root/.openclaw/workspace/nutrition/daily/YYYY-MM-DD.json`
+- Saved meals: `/root/.openclaw/workspace/nutrition/saved_meals.json`
+
+**How it works:**
+- Hirsch texts food/exercise naturally ("had chicken and rice", "did 60min at the gym")
+- I am the coach — I handle all LLM reasoning. Python state.py just handles file I/O.
+- I call `python3 /root/.openclaw/workspace/nutrition/state.py context` to get current context before replying
+- I call state.py CLI commands to persist food logs, exercise, weight, saved meals
+- I refine the calorie hypothesis weekly based on weight trend + gym performance
+
+**Targets:**
+- Calories: 1900 kcal (hypothesis, not fixed)
+- Protein: >=150g | Carbs: ~160g | Fat: ~50g
+- Goal: body recomposition (fat loss + muscle preservation)
+
+**State CLI:**
+```
+python3 nutrition/state.py context
+python3 nutrition/state.py summary
+python3 nutrition/state.py log_food '{"name":"...","calories":X,"protein_g":X,"carbs_g":X,"fat_g":X}'
+python3 nutrition/state.py log_exercise '{"activity":"...","calories_burned":X}'
+python3 nutrition/state.py log_weight 149.5
+python3 nutrition/state.py save_meal '{"name":"...","calories":X,"protein_g":X,"carbs_g":X,"fat_g":X}'
+python3 nutrition/state.py weekly
+python3 nutrition/state.py adjust <new_kcal> "reason"
+```
 
 ---
 

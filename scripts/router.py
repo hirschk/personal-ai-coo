@@ -49,9 +49,31 @@ TASK_MAP = {
     ("session",    "close"):             SCRIPTS / "session-close.py",
 }
 
-JOB_KEYWORDS      = {"job", "outreach", "interview", "apply", "followup", "pipeline", "recruiter", "role", "resume"}
-LINKEDIN_KEYWORDS = {"linkedin", "post", "content"}
-IDEAS_KEYWORDS    = {"idea", "project", "capture"}
+JOB_KEYWORDS       = {"job", "outreach", "interview", "apply", "followup", "pipeline", "recruiter", "role", "resume"}
+LINKEDIN_KEYWORDS  = {"linkedin", "post", "content"}
+IDEAS_KEYWORDS     = {"idea", "project", "capture"}
+NUTRITION_KEYWORDS = {
+    "ate", "eating", "food", "meal", "breakfast", "lunch", "dinner", "snack",
+    "calories", "protein", "carbs", "fat", "macros", "nutrition", "diet",
+    "workout", "gym", "exercise", "walked", "ran", "running", "training",
+    "weight", "kcal", "hungry", "had", "drank", "shake", "chicken", "rice",
+    "oats", "eggs", "skyr", "yogurt", "summary", "totals", "remaining",
+    "weekly review", "deficit", "bulk", "cut", "recomp",
+}
+NUTRITION_ENGINE = WORKSPACE / "nutrition" / "nutrition_engine.py"
+
+
+def is_nutrition_message(text):
+    words = set(text.lower().replace("-", " ").split())
+    # Check word overlap
+    if words & NUTRITION_KEYWORDS:
+        return True
+    # Check phrases
+    phrases = ["i had", "i ate", "i drank", "i did", "i went", "just had",
+               "weekly review", "nutrition summary", "macro", "calorie target",
+               "how am i doing", "what should i eat", "what can i eat"]
+    t = text.lower()
+    return any(p in t for p in phrases)
 
 
 def classify_message(message):
@@ -101,6 +123,11 @@ def main():
     args = parser.parse_args()
 
     if args.message:
+        # Nutrition takes priority — check first
+        if is_nutrition_message(args.message):
+            log.info("Routing to nutrition engine")
+            sys.exit(run_script(NUTRITION_ENGINE, message=args.message))
+
         agent, task = classify_message(args.message)
         log.info(f"Classified message to agent={agent}, task={task}")
         script = TASK_MAP.get((agent, task))
